@@ -39,3 +39,8 @@ end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data'
+
+gem 'mechanize', '2.7.5'
+gem 'watir', '6.10.3'
+gem 'selenium-webdriver', '3.9.0'
+gem 'webdrivers',z '3.2.4'
