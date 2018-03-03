@@ -1,0 +1,171 @@
+---
+- !ruby/object:Room
+  name: CUB01
+  code: fa9f51b1-c34d-4715-b9f2-33c9e4046126
+  capacity: '4'
+  schedule: {}
+- !ruby/object:Room
+  name: CUB03 (CUB03_A)
+  code: 7afc02c0-808e-4029-a7c1-002fd94a2250
+  capacity: '1'
+  schedule: {}
+- !ruby/object:Room
+  name: CUB03 (CUB03_B)
+  code: 72b70a36-aafa-482f-b19b-562ada9f5ab7
+  capacity: '1'
+  schedule: {}
+- !ruby/object:Room
+  name: CUB04
+  code: 388624f8-c677-43a9-8067-000a51704739
+  capacity: '4'
+  schedule: {}
+- !ruby/object:Room
+  name: CUB05 (CUB05_A)
+  code: d1348c08-765f-4a9a-8f45-867d64ee47c8
+  capacity: '1'
+  schedule: {}
+- !ruby/object:Room
+  name: CUB05 (CUB05_B)
+  code: 549a13ed-2a55-4683-9952-726a50f98b03
+  capacity: '1'
+  schedule: {}
+- !ruby/object:Room
+  name: CUB06 (CUB06_A)
+  code: e26e6526-2ea4-4f4e-a3e2-d491f115c363
+  capacity: '1'
+  schedule: {}
+- !ruby/object:Room
+  name: CUB06 (CUB06_B)
+  code: 11cf28d0-f293-4c79-b0ea-6063f5695999
+  capacity: '1'
+  schedule: {}
+- !ruby/object:Room
+  name: CUB07
+  code: 34ce2c79-707e-4960-b6f1-ffea63a4e04a
+  capacity: '4'
+  schedule: {}
+- !ruby/object:Room
+  name: CUB08 (CUB08_A)
+  code: 321e713f-18d6-4967-8e12-f2175df50f72
+  capacity: '1'
+  schedule: {}
+- !ruby/object:Room
+  name: CUB08 (CUB08_B)
+  code: 38fe9d5a-16f6-4cec-8fbf-44e0db3f2c0a
+  capacity: '1'
+  schedule: {}
+- !ruby/object:Room
+  name: CUB09 (CUB09_A)
+  code: a296d3c2-4d34-437b-b4e5-e0e167986915
+  capacity: '1'
+  schedule: {}
+- !ruby/object:Room
+  name: CUB09 (CUB09_B)
+  code: a66a5d64-ce91-43fc-bdc3-860d9d224aa6
+  capacity: '1'
+  schedule: {}
+- !ruby/object:Room
+  name: CUB10
+  code: 55ffbe8d-156b-44ac-a828-69f0431e9aa8
+  capacity: '4'
+  schedule: {}
+- !ruby/object:Room
+  name: CUB11 (CUB11_A)
+  code: 46cfdb6f-9a46-416b-b3c6-e1ceb580e1a0
+  capacity: '1'
+  schedule: {}
+- !ruby/object:Room
+  name: CUB11 (CUB11_B)
+  code: 5f0f5b38-d8d4-4d21-ac09-2974c810aef0
+  capacity: '1'
+  schedule: {}
+- !ruby/object:Room
+  name: CUB12 (CUB12_A)
+  code: 125de4e2-8bd7-4ff1-9c08-ba64fdecb95f
+  capacity: '1'
+  schedule: {}
+- !ruby/object:Room
+  name: CUB12 (CUB12_B)
+  code: b1fc6f52-0657-4b84-877b-27893b4079f7
+  capacity: '1'
+  schedule: {}
+- !ruby/object:Room
+  name: CUB13 (CUB13_A)
+  code: f5d89783-902c-4a19-8a48-c14d388e1893
+  capacity: '1'
+  schedule: {}
+- !ruby/object:Room
+  name: CUB13 (CUB13_B)
+  code: 2afb0603-897c-4f68-9bd4-631e664d9e5d
+  capacity: '1'
+  schedule: {}
+- !ruby/object:Room
+  name: CUB14 (CUB14_A)
+  code: e4c4abba-61e7-479b-bb31-b7bb41163f0a
+  capacity: '1'
+  schedule: {}
+- !ruby/object:Room
+  name: CUB14 (CUB14_B)
+  code: c1005072-22d0-46e4-ad2d-8bfcbf06ed7d
+  capacity: '1'
+  schedule: {}
+- !ruby/object:Room
+  name: CUB15 (CUB15_A)
+  code: cd7959b7-5132-49a3-ae5b-9579c8fcd4d7
+  capacity: '1'
+  schedule: {}
+- !ruby/object:Room
+  name: CUB15 (CUB15_B)
+  code: e6eea8cb-5526-4031-8dc7-cc83be40f66e
+  capacity: '1'
+  schedule: {}
+- !ruby/object:Room
+  name: CUB16 (CUB16_A)
+  code: 3fe17345-3be1-474a-93f6-68c958c8a7be
+  capacity: '1'
+  schedule: {}
+- !ruby/object:Room
+  name: CUB16 (CUB16_B)
+  code: e888027e-d2ad-4964-9d33-21296f032813
+  capacity: '1'
+  schedule: {}
+- !ruby/object:Room
+  name: CUB17 (CUB17_A)
+  code: 420802ac-ed36-4c17-9eb6-829a80a56d1f
+  capacity: '1'
+  schedule: {}
+- !ruby/object:Room
+  name: CUB17 (CUB17_B)
+  code: c3617884-d5e8-4cf2-9df4-9b714e5c5dcd
+  capacity: '1'
+  schedule: {}
+- !ruby/object:Room
+  name: CUB18 (CUB18_A)
+  code: 1321b1be-1c96-44ed-927b-612e6feb0970
+  capacity: '1'
+  schedule: {}
+- !ruby/object:Room
+  name: CUB18 (CUB18_B)
+  code: 290dedfd-14aa-4751-9f69-616e38ef0b01
+  capacity: '1'
+  schedule: {}
+- !ruby/object:Room
+  name: CUB19 (CUB19_A)
+  code: ced49e8b-9810-4cfa-9d5e-ab159f96a2d8
+  capacity: '1'
+  schedule: {}
+- !ruby/object:Room
+  name: CUB19 (CUB19_B)
+  code: 3cc2a6d1-20d8-48b8-8c3e-7395a25882dc
+  capacity: '1'
+  schedule: {}
+- !ruby/object:Room
+  name: CUB20 (CUB20_A)
+  code: fdfc0daa-b183-423d-93f0-540efe87d392
+  capacity: '1'
+  schedule: {}
+- !ruby/object:Room
+  name: CUB20 (CUB20_B)
+  code: 2b092a20-e214-45bc-80ba-62b31eded67e
+  capacity: '1'
+  schedule: {}
