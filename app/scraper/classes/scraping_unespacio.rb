@@ -8,9 +8,7 @@ require 'date'
 class ScrapingUnespacio < Scraped
 
   def initialize
-    super
-    #rooms: an array rooms (class Room)
-    ##@@rooms = []    
+    super 
   end
 
   def load_rooms
@@ -35,35 +33,15 @@ class ScrapingUnespacio < Scraped
     htmlNokogiri.css(".ClickableRow").each do |row|
       pagesIds.push row.attributes["data-rowid"].value
       roomsNames.push row.css("td")[2].text   
-    end  
-    #BotModule.browser.div(class: "imgNextArrow").click
-    #sleep 1
-    #htmlNokogiri = BotModule.get_nokogiri_html_browser
-    #htmlNokogiri.css(".ClickableRow").each do |row|
-    #  pagesIds.push row.attributes["data-rowid"].value
-    #  roomsNames.push row.css("td")[2].text
-    #end
+    end 
     pagesIds.each_with_index do |id, index|
       next if index == 1 or index == 2 or index == 36 or index == 37 #Those rooms can't be reseverd via web
       BotModule.browser_get_page(BotModule.links[:room_detail_part]+id)
-      #p browser.element(css: ".pageHeader").text.strip
       capacity = BotModule.browser.element(css: "tr.HTMLTable-AlignTD:nth-child(3) > td:nth-child(2) > span:nth-child(1)").text.strip
       BotModule.refresh_browser
       @@rooms.push(Room.new(roomsNames[index], id, capacity))
-      #Fetching the day schedules of the rooms in the actual day...  
-      #BotModule.browser.a(href: "#").click
-      #BotModule.browser.span(class: "TabCaption", text: "Daily").click
-      #reservations = BotModule.browser.divs(class: "calendarBlock")
-      #reservations.each do |reservation|
-      #  reservation.click
-      #  sleep(1)
-      #  #p BotModule.browser.element(css: ".BlockContent > p:nth-child(1)").text.strip.split("\n")[2] #ADD TO THE NEW ROOM 
-      #  @rooms.last.add_to_schedule(Date.today.to_s, Date.today.wday, BotModule.browser.element(css: ".BlockContent > p:nth-child(1)").text.strip.split("\n")[2])
-        #p @rooms.last.schedule
-      #end    
     end
     FileModule.serialize(@@rooms, "rooms")
-    #pp @rooms
     BotModule.clean_browser
   end  
 
@@ -125,8 +103,6 @@ class ScrapingUnespacio < Scraped
     sleep 1
     day_available = true
     @@rooms.each_with_index do |room, index|
-      #p "ENTRE!"
-      #p index
       if capacity != -1 then next if Integer(room.capacity) != capacity end 
       code = 'tr[data-rowid="' + room.code + '"]'
       BotModule.browser.element(css: code).wait_until_present
@@ -134,7 +110,6 @@ class ScrapingUnespacio < Scraped
       sleep 1
       BotModule.browser.element(css: "#btnAnyDate").click
       sleep 1
-      #script_table_order = "arguments[0].style.float = 'initial';"
       script_pass_month = "IS.SelfService.AvailabilityCalendar.ScrollTo(3);"
       #BotModule.browser.screenshot.save("./screens/phantomjs_screen.png") 
       find_table = false
@@ -143,15 +118,9 @@ class ScrapingUnespacio < Scraped
         for i in 0..2
           BotModule.browser.element(css: "#availabilityCalendar#{i}").wait_until_present
           table = BotModule.browser.element(css: "#availabilityCalendar#{i}")
-          #3.times do 
-          #  table.visible? ? BotModule.browser.execute_script(script_table_order, table) : break
-          #end
-          #BotModule.browser.execute_script(script_table_order, table)
-          #sleep 1
           header = table.td(class: "dayHeader").text.strip
           if header.include? what_month(date.month) and header.include? date.year.to_s
             find_table = true
-            #p "Sacare su horario!"
             calendar_day = table.div(text: date.day.to_s)
             day_available = calendar_day.parent.attribute_value("class").include? "dayAvailable"
             break if !day_available
@@ -162,7 +131,6 @@ class ScrapingUnespacio < Scraped
             room_schedule.trs.each do |tr|
               hour = tr.tds[0].text.strip
               status = tr.tds[1].text.strip
-              #p status 
               if !status.empty?
                 @@rooms[index].add_to_schedule_time(date, hour)
               end
@@ -174,30 +142,10 @@ class ScrapingUnespacio < Scraped
         sleep 1
       end until find_table
       break if !day_available
-      #Fetching the schedules with the calendar link... (Out of date)
-      #BotModule.browser_get_page(BotModule.links[:room_detail_part]+room.code)
-      #BotModule.refresh_browser
-      #BotModule.browser.a(href: "#").click
-      #BotModule.browser.span(class: "TabCaption", text: "Daily").click
-      #pageDay = BotModule.browser.element(css: "#td0").text.strip     
-      #i = 0
-      #while i < Integer(day) do
-      #  sleep(1)
-      #  BotModule.browser.element(css: "a.calendarNavLink:nth-child(3)").click
-      #  i = i + 1
-      #end
-      #p BotModule.browser.element(css: "#td0").text.strip
-      #reservations = BotModule.browser.divs(class: "calendarBlock")
-      #reservations.each do |reservation|
-      #  reservation.click
-      #  sleep(1)
-      #  @@rooms.last.add_to_schedule((Date.today + Integer(day)).to_s, (Date.today + Integer(day)).wday, BotModule.browser.element(css: ".BlockContent > p:nth-child(1)").text.strip.split("\n")[2])
-      #end
     end
     @@rooms.each_with_index { |room, index| (6..12).each { |i| rooms[index].add_to_schedule_time(date, "#{i}:00 AM") } } if !day_available
     @@rooms.each_with_index { |room, index| (1..8).each { |i| rooms[index].add_to_schedule_time(date, "#{i}:00 PM") } } if !day_available
     BotModule.clean_browser    
-    #pp @rooms
     return rooms_names
   end
 
@@ -224,7 +172,6 @@ class ScrapingUnespacio < Scraped
     BotModule.browser.element(css: "#cboEndTime").option(text: parts[1]).click
     BotModule.browser.element(css: "#btnAnyDate").click
     sleep 1
-    #script_table_order = "arguments[0].style.float = 'initial';"
     script_pass_month = "IS.SelfService.AvailabilityCalendar.ScrollTo(3);"
     day_available = true
     find_table = false
@@ -246,7 +193,6 @@ class ScrapingUnespacio < Scraped
           sleep 1
           BotModule.browser.element(css: "#rooms > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > h2:nth-child(1)").click
           sleep 1
-          ####search_tables = BotModule.browser.element(css: "#rooms")
           result_rooms = []
           iterate = BotModule.browser.element(css: "#rooms").divs(class: "PageSection initialized")
           frequency = iterate.size
@@ -255,8 +201,7 @@ class ScrapingUnespacio < Scraped
             identifier = table.element(class: "titleSectionCollapsible").element(class: "titleSectionLabel").text.strip
             parts = identifier.split()
             hour_detail = parts[0].split(":")
-            sleep 1 
-            #pp table.element(class: "ActionBarResultsPerPage").text
+            sleep 1
             table.element(class: "ActionBarResultsPerPage", index:0).option(text: "50").click
             sleep 1
             table.divs[0].divs[0].tables[1].trs.each_with_index do |tr, index|
@@ -265,14 +210,11 @@ class ScrapingUnespacio < Scraped
               end 
             end
           end
-          #pp result_rooms
           groups = result_rooms.inject({}) do |hsh, ball|
-            #hsh[ball] = 1 if hsh[ball].nil?
             hsh[ball] ||= 0
             hsh[ball] = hsh[ball] + 1
             hsh
-          end 
-          #pp groups
+          end
           available_rooms = []
           groups.each do |key, value|
             if value == frequency
@@ -280,14 +222,12 @@ class ScrapingUnespacio < Scraped
             end
           end
           #BotModule.browser.screenshot.save("./screens/phantomjs_screen.png")
-          ##pp available_rooms
           result_rooms = []
           available_rooms.each do |a_room|
             r_capacity = @@rooms.find {|rm| rm.name == a_room}
             result_rooms.push("#{a_room}, Capacity = #{r_capacity.capacity}") 
           end
           BotModule.clean_browser
-          #return available_rooms
           return result_rooms
           break
         end  
@@ -319,7 +259,6 @@ class ScrapingUnespacio < Scraped
     BotModule.browser.element(css: "#cboEndTime").option(text: parts[1]).click
     BotModule.browser.element(css: "#btnAnyDate").click
     sleep 1
-    #script_table_order = "arguments[0].style.float = 'initial';"
     script_pass_month = "IS.SelfService.AvailabilityCalendar.ScrollTo(3);"
     day_available = true
     find_table = false
@@ -364,7 +303,6 @@ class ScrapingUnespacio < Scraped
       BotModule.browser.element(css: "input.MessageBoxButton:nth-child(1)").click
       sleep 1
       BotModule.browser.element(css: "#btnConfirm").click
-      # BotModule.browser.element(css: "#btnConfirm").click ##Shouldn't be
       BotModule.browser.element(css: "input.MessageBoxButton:nth-child(1)").click
       BotModule.clean_browser
       return true
@@ -422,7 +360,6 @@ class ScrapingUnespacio < Scraped
               BotModule.browser.element(css: "input.MessageBoxButton:nth-child(1)").click
               sleep 1
               BotModule.browser.element(css: "#btnConfirm").click
-              # BotModule.browser.element(css: "#btnConfirm").click ##Shouldn't be
               BotModule.browser.element(css: "input.MessageBoxButton:nth-child(1)").click
               BotModule.clean_browser
               break
@@ -489,42 +426,4 @@ class ScrapingUnespacio < Scraped
       return false
     end
   end
-    
-  ##def what_month_spanish(number)
-  ##  number = number.to_s
-  ##  months = {
-  ##    "1" => "Enero", 
-  ##    "2" => "Febrero",
-  ##    "3" => "Marzo", 
-  ##    "4" => "Abril", 
-  ##    "5" => "Mayo", 
-  ##    "6" => "Junio", 
-  ##    "7" => "Julio", 
-  ##    "8" => "Agosto", 
-  ##    "9" => "Septiembre", 
-  ##    "10" => "Octubre", 
-  ##    "11" => "Noviembre", 
-  ##    "12" => "Diciembre"
-  ##  }
-  ##  return months[number] 
-  ##end
-
-  ##def what_month(number)
-  ##  number = number.to_s
-  ##  months = {
-  ##    "1" => "January", 
-  ##    "2" => "February",
-  ##    "3" => "March", 
-  ##    "4" => "April", 
-  ##    "5" => "May", 
-  ##    "6" => "June", 
-  ##    "7" => "July", 
-  ##    "8" => "August", 
-  ##    "9" => "September", 
-  ##    "10" => "October", 
-  ##    "11" => "November", 
-  ##    "12" => "December"
-  ##  }
-  ##  return months[number] 
-  ##end
 end

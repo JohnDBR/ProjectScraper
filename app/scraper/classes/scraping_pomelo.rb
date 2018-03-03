@@ -8,36 +8,12 @@ class ScrapingPomelo < Scraped
 
   def initialize
     super
-  	#students: an array students (class Student)
-    ##@students = []
-    #conflict_matrix: a hash of arrays: keys are the days of the week and the value are arrays of string that simbolize the hours of class from that day
-    ##@conflict_matrix = {
-    ##  "Monday"    => {},
-    ##  "Tuesday"   => {},
-    ##  "Wednesday" => {},
-    ##  "Thursday"  => {},
-    ##  "Friday"    => {},
-    ##  "Saturday"  => {},
-    ##  "Sunday"    => {}
-    ##  }
-    ##fill_conflict_matrix()
   end
-
-  #This method put the hours of the day in the conflict matrix 
-  #def fill_conflict_matrix
-  #   @conflict_matrix.each do |key,value|
-  #   (6..20).each { |n| @conflict_matrix[key]["#{n}:30 - #{n+1}:30"] = "" }
-  #  end
-  #end
 
   #receive: a boolean, true if we are going to add a student to the conflict matrix false if he is a temporal student 
   def student_info(save = false)
     ##get name and code of the student from the banner on top of the page
     page = BotModule.get_page(BotModule.links[:schedule])
-    #code_name = page.parser.css('body div table tr td div.staticheaders').text.split("\n")[1].split(' ')
-    #name = code_name[1..-1].join(' ') 
-    #@temporal_student = Student.new(name, code_name[0])
-    #p @@temporal_student
     
     ##selecting the last semester to see the schedule
     form = page.forms[1]
@@ -49,7 +25,6 @@ class ScrapingPomelo < Scraped
     end
     p period
     p form.fields[0].value = period
-    #form.fields[0].options[1].click
     page = form.submit
     
     ##searching the correct tables to "scrap" the hours of class
@@ -82,8 +57,7 @@ class ScrapingPomelo < Scraped
       @@conflict_matrix.each do |key, value| 
          value.each do |key2, value2| 
           if !value2.nil? and !value2.empty?
-            @@conflict_matrix[key][key2] = value2.split.uniq.join(" ") 
-            #p value2
+            @@conflict_matrix[key][key2] = value2.split.uniq.join(" ")
           end
         end
       end

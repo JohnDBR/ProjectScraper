@@ -1,4 +1,3 @@
-# require 'io/console'
 require_relative 'classes/scraped'
 require_relative 'classes/scraping_authenticate'
 require_relative 'classes/scraping_pomelo'
@@ -37,7 +36,6 @@ begin
       ConsoleViewModule.login(sl, "pomelo")
       pp sp.student_info()
       puts ""
-      #pp sp.temporal_student.schedule
     when 2
       ConsoleViewModule.login(sl, "pomelo")
       pp sp.student_info(true)
@@ -52,17 +50,6 @@ begin
     when 6 
       ConsoleViewModule.login(sl, "unespacio")
       date = ConsoleViewModule.get_date("Ingrese la fecha a buscar: ")
-      #capacity = ConsoleViewModule.message_from_0("Ingresa la capacidad del cubiculo (1 o 4): ", 1, 4)
-      #puts "\nObteniendo los horarios de los cubiculos, porfavor espere, esto puede tomar un momento..."
-      #su.search_all_room_schedules(date, -1)
-      ##p su.room_schedule(ConsoleViewModule.message_from_0("Selecione alguno de los siguientes cubiculos para reservar: ", su.search_all_room_schedules(date, -1)), date)
-      #p room_schedule(
-      #  ConsoleViewModule.message_from_0(
-      #     "Selecione alguno de los siguientes cubiculos para reservar: ",
-      #     su.search_all_room_schedules(date, -1)
-      #     ),
-      #  date
-      #  ) 
       p su.search_room_schedule(
         ConsoleViewModule.message_from_0(
           "Selecione alguno de los siguientes cubiculos para reservar: ",
@@ -113,30 +100,3 @@ begin
      if status then puts "Se ha reservado el cubiculo satisfactoriamente!" else puts "No se ha podido reservar el cubiculo." end
   end
 end until option == 0
-
-#ConsoleViewModule.login(sl, "unespacio")
-#sl.login_unespacio?("djbarbosa", "")
-#puts "\nObteniendo la informacion de los cubiculos, porfavor espere, esto puede tomar un momento..."
-#su.create_rooms
-
-#date = ConsoleViewModule.get_date("Ingrese la fecha a buscar: ")
-#capacity = ConsoleViewModule.message_from_0("Ingresa la capacidad del cubiculo (1 o 4): ", 1, 4)
-#puts "\nObteniendo los horarios de los cubiculos, porfavor espere, esto puede tomar un momento..."
-#su.search_all_room_schedules(date, capacity)
-
-#su.reserve_room(
-#     ConsoleViewModule.message_from_0(
-#     "Selecione alguno de los siguientes cubiculos para reservar: ",
-#     su.search_room_to_reserve(
-#          ConsoleViewModule.get_date("Ingrese la fecha a reservar: "),
-#          ConsoleViewModule.get_hour_range("El rango maximo puede tener una diferencia de 2 horas\nEl rango debe ser multiplo de media hora\nIngrese el rango de hora : ")
-#          )
-#     )
-#)
-
-#su.cancel_booking(
-#     ConsoleViewModule.menu_from_0(
-#     "Selecione alguna de las reservas para cancelarla: ",
-#     su.search_bookings
-#     )
-#)
