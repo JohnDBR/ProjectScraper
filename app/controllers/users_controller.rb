@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  skip_before_action :get_current_user, only: [:create]
+  before_action :set_user, only: [:update, :destroy]
 
   def index 
     render_ok User.all
@@ -11,12 +11,12 @@ class UsersController < ApplicationController
   end
 
   def update 
-    @current_user.update_attributes user_params 
+    @user.update_attributes user_params 
     save_and_render @current_user
   end
 
   def destroy
-    render_ok @current_user.destroy  
+    render_ok @user.destroy  
   end
 
   private 
