@@ -21,8 +21,8 @@ end
 begin 
   option = ConsoleViewModule.menu(
     "Bienvenido al script de Matriz de Conflicto y Unespacio:",
-    "Ver horario de un estudiante.",
-    "Agregar horario de un estudiante a la Matriz de conflicto.",
+    # "Ver horario de un estudiante.",
+    # "Agregar horario de un estudiante a la Matriz de conflicto.",
     "Mostrar la Matriz de conflicto.",
     "Guardar la Matriz de conflicto (.json)",
     "Renderizar .json de una Matriz de conflicto.",
@@ -32,11 +32,11 @@ begin
     "Reservar cubiculo para la Matriz de Conlicto."
   )  
   case option
-    when 1
+    # when 1
       ConsoleViewModule.login(sl, "pomelo")
       pp sp.student_info()
       puts ""
-    when 2
+    # when 2
       ConsoleViewModule.login(sl, "pomelo")
       pp sp.student_info(true)
       puts "\nEstudiante añadido!"
