@@ -15,6 +15,14 @@ class ApplicationController < ActionController::API
     raise Exceptions::CurrentUserNotFound unless @current_user
   end
 
+  def is_current_user_admin
+    render json: :permissions_error unless @current_user.role.eql? "admin" 
+  end
+
+  def is_current_user_normal
+    render json: :permissions_error unless @current_user.role.eql? "normal"
+  end
+
   def render_ok(obj)
     render json: obj, status: :ok
   end
