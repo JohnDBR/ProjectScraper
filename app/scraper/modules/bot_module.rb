@@ -1,5 +1,5 @@
 require 'watir'
-require 'webdrivers'
+# require 'webdrivers'
 require 'mechanize'
 
 module BotModule
