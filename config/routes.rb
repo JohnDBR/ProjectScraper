@@ -6,5 +6,7 @@ Rails.application.routes.draw do
   resources :sessions, only: :create
   delete 'sessions', to: 'sessions#destroy'
 
+  get 'scraper/student_schedule', to: 'scraper#student_schedule'
+
   
 end
