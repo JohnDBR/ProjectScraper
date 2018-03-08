@@ -1,16 +1,16 @@
-require_relative '../scraper/classes/scraped'
-require_relative '../scraper/classes/scraping_authenticate'
-require_relative '../scraper/classes/scraping_pomelo'
-require_relative '../scraper/classes/scraping_unespacio'
-
 class ScraperController < ApplicationController
+  skip_before_action :get_current_user 
   before_action :initialize_authenticate_scraper
   before_action :initialize_pomelo_scraper, only: [:student_schedule, :conflict_matrix]
   # before_action :initialize_unespacio_scraper, only: []
 
   def student_schedule
+    # pp "start"
+    # @sl = ScrapingAuthenticate.new
+    # @sp = ScrapingPomelo.new
+    # pp "init"
     @sl.login_pomelo?(params[:user], params[:password])
-    @sp.student_info()
+    render_ok @sp.student_info()
   end
 
   def conflict_matrix

@@ -11,6 +11,11 @@ require "action_view/railtie"
 require "action_cable/engine"
 # require "sprockets/railtie"
 require "rails/test_unit/railtie"
+# require the scraper project chores
+require "#{Dir.pwd}/app/scraper/classes/scraped.rb"
+require "#{Dir.pwd}/app/scraper/classes/scraping_authenticate.rb"
+require "#{Dir.pwd}/app/scraper/classes/scraping_pomelo.rb"
+require "#{Dir.pwd}/app/scraper/classes/scraping_unespacio.rb"
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
