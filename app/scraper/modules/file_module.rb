@@ -42,6 +42,23 @@ module FileModule
         return false
     end
   end  
+
+  #receive: an object it could be a hash or an array and the file name 
+  #return: an string, the url where the file was stored
+  def self.web_serialize(object, file_name)
+    begin
+      names = [-1]
+      Dir.new('db/').each do |file|
+        if file.include?(".data") and file.include?(file_name) then names.push(Integer(file.split('(')[1].split(")")[0])) end
+      end
+      storage_name = "#{file_name}(#{names.max + 1})"
+      path = "db/#{storage_name}.data"
+      File.open(path,"w") { |f| f.write(object.to_yaml) }
+      return storage_name
+    rescue
+        return nil
+    end
+  end 
   
   #receive: a string with the name of the file that we are going to load
   #return: the object   

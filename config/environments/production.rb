@@ -80,4 +80,7 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
+
+  # Enable the cookie storage. Session storage doesn't exits in the apis
+  # config.session_store :cookie_store, :key => '_my_app_session', :domain => :all
 end

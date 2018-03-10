@@ -1,3 +1,4 @@
+require_relative '../modules/file_module'
 require 'date'
 require 'time'
 
@@ -19,6 +20,24 @@ class Scraped
     "Saturday"  => {},
     "Sunday"    => {}
   }
+
+  def load(storage_name)
+    hash = FileModule.deserialize(storage_name)
+    @@temporal_student = hash[:temporal_student]
+    @@rooms = hash[:rooms]
+    @@students = hash[:students]
+    @@conflict_matrix = hash[:conflict_matrix]
+  end
+
+  def save
+    package = {
+    :temporal_student => @@temporal_student,
+    :rooms            => @@rooms,
+    :students         => @@students,
+    :conflict_matrix  => @@conflict_matrix  
+  }
+  FileModule.web_serialize(package, "package")
+  end
 
   def initialize 
     fill_conflict_matrix() 

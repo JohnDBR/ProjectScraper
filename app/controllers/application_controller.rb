@@ -9,8 +9,8 @@ class ApplicationController < ActionController::API
   protected
   def get_current_user
     authenticate_with_http_token do |key, options|
-      token = Token.find_by(secret: key)
-      @current_user = token.user if token
+      @token = Token.find_by(secret: key)
+      @current_user = @token.user if @token
     end
     raise Exceptions::CurrentUserNotFound unless @current_user
   end

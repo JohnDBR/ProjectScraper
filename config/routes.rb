@@ -7,6 +7,6 @@ Rails.application.routes.draw do
   delete 'sessions', to: 'sessions#destroy'
 
   get 'scraper/student_schedule', to: 'scraper#student_schedule'
-
+  get 'scraper/conflict_matrix', to: 'scraper#conflict_matrix'
   
 end
