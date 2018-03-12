@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   resources :sessions, only: :create
   delete 'sessions', to: 'sessions#destroy'
 
-  get 'scraper/student_schedule', to: 'scraper#student_schedule'
-  get 'scraper/conflict_matrix', to: 'scraper#conflict_matrix'
+  post 'scraper/student_schedule', to: 'scraper#student_schedule'
+  post 'scraper/conflict_matrix', to: 'scraper#conflict_matrix'
   
 end
