@@ -23,7 +23,8 @@ gem 'bcrypt', '~> 3.1.7'
 # gem 'capistrano-rails', group: :development
 
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
-gem 'rack-cors'
+# This is required because angular requests can present problems...
+gem 'rack-cors', '~> 1.0.2' 
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
