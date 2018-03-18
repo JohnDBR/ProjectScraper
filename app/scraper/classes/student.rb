@@ -28,7 +28,7 @@ class Student
   #This method put the hours of the day in the schedule 
   def fill_schedule
     @schedule.each do |key,value|
-     (6..20).each { |n| @schedule[key]["#{n}:30 - #{n+1}:30"] = "" }
+     (6..20).each { |n| @schedule[key]["#{n}:30 - #{n+1}:30"] = "0" }
     end
    end
   

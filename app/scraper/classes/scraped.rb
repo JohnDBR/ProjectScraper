@@ -21,22 +21,23 @@ class Scraped
     "Sunday"    => {}
   }
 
-  def load(storage_name)
-    hash = FileModule.deserialize(storage_name)
+  def load(path)
+    hash = FileModule.deserialize(path.split("/").last.split(".").first)
     @@temporal_student = hash[:temporal_student]
     @@rooms = hash[:rooms]
     @@students = hash[:students]
     @@conflict_matrix = hash[:conflict_matrix]
   end
 
-  def save
+  def save(path)
     package = {
-    :temporal_student => @@temporal_student,
-    :rooms            => @@rooms,
-    :students         => @@students,
-    :conflict_matrix  => @@conflict_matrix  
-  }
-  FileModule.web_serialize(package, "package")
+      :temporal_student => @@temporal_student,
+      :rooms            => @@rooms,
+      :students         => @@students,
+      :conflict_matrix  => @@conflict_matrix  
+    }
+    FileModule.web_serialize(package, "db/#{path.split("/").last}")
+    return path
   end
 
   def initialize 
@@ -48,11 +49,12 @@ class Scraped
     return @@conflict_matrix
   end
 
+  #return: true, is the conlict matrix is just initialized, no values were added
   def conflict_matrix_is_clean?
     @@conflict_matrix.each do |key,value|
       (6..20).each do |n| 
         input = @@conflict_matrix[key]["#{n}:30 - #{n+1}:30"]
-        return false if !input.empty? && !input.nil? && !input.eql?("") 
+        return false if !input.eql?("0") 
       end
     end
     return true
@@ -63,6 +65,16 @@ class Scraped
    @@conflict_matrix.each do |key,value|
      (6..20).each { |n| @@conflict_matrix[key]["#{n}:30 - #{n+1}:30"] = "" }
    end
+  end
+
+  #This method put 0 in the nil spaces of the the conflict_matrix
+  def set_0_on_free_hours
+    @@conflict_matrix.each do |key,value|
+      (6..20).each do |n| 
+        input = @@conflict_matrix[key]["#{n}:30 - #{n+1}:30"]
+        @@conflict_matrix[key]["#{n}:30 - #{n+1}:30"] = "0" if input.empty? || input.nil? || input.eql?("") 
+      end
+    end
   end
 
   #receive: a string with the correct range of hour format
@@ -103,7 +115,7 @@ class Scraped
     for n in 6..20 
       #p "#{n}:30 - #{n+1}:30"
       #p @@conflict_matrix[date]["#{n}:30 - #{n+1}:30"]
-      if @@conflict_matrix[date]["#{n}:30 - #{n+1}:30"].eql?("") 
+      if @@conflict_matrix[date]["#{n}:30 - #{n+1}:30"].eql?("0") 
         if first.eql?("")
           first = "#{n}:30 - "
         end

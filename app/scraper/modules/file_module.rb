@@ -45,16 +45,11 @@ module FileModule
 
   #receive: an object it could be a hash or an array and the file name 
   #return: an string, the url where the file was stored
-  def self.web_serialize(object, file_name)
+  def self.web_serialize(object, path)
     begin
-      names = [-1]
-      Dir.new('db/').each do |file|
-        if file.include?(".data") and file.include?(file_name) then names.push(Integer(file.split('(')[1].split(")")[0])) end
-      end
-      storage_name = "#{file_name}(#{names.max + 1})"
-      path = "db/#{storage_name}.data"
-      File.open(path,"w") { |f| f.write(object.to_yaml) }
-      return storage_name
+      storage_path = "db/#{path.split("/").last}"
+      File.open(storage_path,"w") { |f| f.write(object.to_yaml) }
+      return path 
     rescue
         return nil
     end
@@ -64,7 +59,9 @@ module FileModule
   #return: the object   
   def self.deserialize(file_name)
     begin
-      return YAML::load(File.open("db/#{file_name}.data"))
+      # object = YAML::load(File.open("db/#{file_name}.data"))
+      # File.open("db/#{file_name}.data") { |file| YAML::load(file) }
+      return YAML.load_file("db/#{file_name}.data")
     rescue 
       return nil 
     end

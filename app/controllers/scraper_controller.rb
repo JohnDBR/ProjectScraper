@@ -14,8 +14,9 @@ class ScraperController < ApplicationController
       @token.storage.destroy
     end
     @sl.login_pomelo?(params[:user], params[:password])
-    render_ok @sp.student_info(true)
-    Storage.create(path:@sp.save, token_id:@token.id)
+    result = @sp.student_info(true)
+    Storage.create(path:@sp.save(Storage.get_path), token_id:@token.id)
+    render_ok result
   end
 
   private 
