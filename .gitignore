@@ -22,4 +22,4 @@
 #If the files were on a previous commit you have to run 'git rm --cached FILE' to start ignoring them...
 Gemfile.lock 
 db/schema.rb
-db/*.data
+db/.data
