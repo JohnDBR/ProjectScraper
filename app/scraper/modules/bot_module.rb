@@ -8,7 +8,8 @@ module BotModule
   @@entity = Mechanize.new{|x| x.user_agent_alias = 'Linux Firefox'}
   
   #browser: a Watir object emulating a browser with phantomjs
-  @@browser = Watir::Browser.new :chrome, headless: true
+  @@browser = Watir::Browser.new :chrome, args: ["headless=true", "disable-gpu=true", "no-sandbox=true" ,"--window-size=1280,1024"]
+
   
   #links: a hash with the links that we're going to use
   @@links = {
