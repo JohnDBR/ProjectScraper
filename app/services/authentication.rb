@@ -20,9 +20,9 @@ class Authentication
   def single_login(credentials)
     credentials[:email] ||= ''
     credentials[:username] ||= ''
-    @user = User.find_by(email: credentials[:email])
-    @user = User.find_by(username: credentials[:username]) unless @user
-    @user = nil unless @user && @user.authenticate(credentials[:password].to_s)
+    @user = User.find_by(email: credentials[:email].downcase)
+    @user = User.find_by(username: credentials[:username].downcase) unless @user
+    @user = nil unless @user && @user.authenticate(credentials[:password].to_s.downcase)
     @errors[:single_authentication] = 'invalid credentials' unless @user
   end
 end
