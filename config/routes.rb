@@ -8,5 +8,11 @@ Rails.application.routes.draw do
 
   post 'scraper/student_schedule', to: 'scraper#student_schedule'
   post 'scraper/conflict_matrix', to: 'scraper#conflict_matrix'
-  
+
+  resources :groups, only: [:create, :update, :destroy]
+  get 'groups', to: 'groups#index'
+
+  resources :members, only: [:create, :update, :destroy] 
+  post 'group_members', to: 'members#index'
+
 end
