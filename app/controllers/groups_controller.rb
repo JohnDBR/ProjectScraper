@@ -6,13 +6,13 @@ class GroupsController < ApplicationController
   end
 
   def create
-    group = Group.new params[:name]
+    group = Group.new(name:params[:name])
     save_and_render group
     Member.create(alias:params[:alias], group_id:group.id, user_id:@current_user.id)
   end
 
   def update 
-    @group.update_attribute params[:name] 
+    @group.update_attribute(:name, params[:name])
     save_and_render @group
   end
 

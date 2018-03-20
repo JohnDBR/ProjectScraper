@@ -12,7 +12,7 @@ class MembersController < ApplicationController
   end
 
   def update 
-    @member.update_attribute params[:alias] 
+    @member.update_attribute(:alias, params[:alias])
     save_and_render @member
   end
 
