@@ -7,12 +7,12 @@ class User < ApplicationRecord
   before_save :format_downcase
 
   has_many :tokens, dependent: :destroy
-  has_many :members
+  has_many :members, dependent: :destroy
   has_many :groups, :through => :members
 
   protected 
   def format_downcase
-      self.email.downcase!
-      self.username.downcase!
+    self.email.downcase!
+    self.username.downcase!
   end
 end
