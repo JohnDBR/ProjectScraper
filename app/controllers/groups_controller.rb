@@ -8,20 +8,30 @@ class GroupsController < ApplicationController
   def create
     group = Group.new(name:params[:name])
     save_and_render group
-    Member.create(alias:params[:alias], group_id:group.id, user_id:@current_user.id)
+    Member.create(alias:params[:alias], group_id:group.id, user_id:@current_user.id, admin:params[:admin])
   end
 
   def update 
-    @group.update_attribute(:name, params[:name])
-    save_and_render @group
+    if is_group_admin?
+      @group.update_attribute(:name, params[:name])
+      save_and_render @group
+    end
+    permissions_error
   end
 
   def destroy
-    render_ok @group.destroy  
+    if is_group_admin?
+      render_ok @group.destroy      
+    end 
+    permissions_error 
   end
 
   private 
   def set_group
-    @group = Group.find params[:id]
+    @group = @current_user.group.find params[:id]
+  end
+
+  def is_group_admin?
+    return Member.where(group_id:@group.id, user_id:@current_user.id).admin
   end
 end
