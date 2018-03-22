@@ -2,7 +2,7 @@ class ApplicationController < ActionController::API
   include ActionController::HttpAuthentication::Token::ControllerMethods
 
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
-  # rescue_from Exceptions::CurrentUserNotFound, with: :if_user_not_found
+  rescue_from Exceptions::CurrentUserNotFound, with: :if_user_not_found
 
   before_action :get_current_user
 
@@ -16,11 +16,15 @@ class ApplicationController < ActionController::API
   end
 
   def is_current_user_admin
-    render json: {authorization: 'you dont have permissions'}, status: :permissions_error unless @current_user.role.eql? "admin" 
+    permissions_error unless @current_user.role.eql? "admin" 
   end
 
   def is_current_user_normal
-    render json: {authorization: 'you dont have permissions'}, status: :permissions_error unless @current_user.role.eql? "normal"
+    permissions_error unless @current_user.role.eql? "normal"
+  end
+
+  def permissions_error
+    render json: {authorization: 'you dont have permissions'}, status: :permissions_error
   end
 
   def render_ok(obj)
