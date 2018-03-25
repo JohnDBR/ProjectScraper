@@ -15,20 +15,22 @@ class GroupsController < ApplicationController
     if is_group_admin?
       @group.update_attribute(:name, params[:name])
       save_and_render @group
+    else
+      permissions_error
     end
-    permissions_error
   end
 
   def destroy
     if is_group_admin?
       render_ok @group.destroy      
-    end 
-    permissions_error 
+    else 
+      permissions_error 
+    end
   end
 
   private 
   def set_group
-    @group = @current_user.group.find params[:id]
+    @group = @current_user.groups.find params[:id]
   end
 
   def is_group_admin?

@@ -13,7 +13,7 @@ class UsersController < ApplicationController
 
   def update 
     @user.update_attributes user_params 
-    save_and_render @current_user
+    save_and_render @user
   end
 
   def destroy
