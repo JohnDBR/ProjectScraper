@@ -63,6 +63,7 @@ class ScrapingPomelo < Scraped
       end
       BotModule.reset_entity
       set_0_on_free_hours
+      fix_0_issues
       return @@conflict_matrix
     end
     BotModule.reset_entity

@@ -77,6 +77,15 @@ class Scraped
     end
   end
 
+  #This method fix wrong camps of the conflict_matrix
+  def fix_0_issues
+    @@conflict_matrix.each do |key,value|
+      (6..20).each do |n| 
+        @@conflict_matrix[key]["#{n}:30 - #{n+1}:30"].tr!('0', '') 
+      end
+    end
+  end
+
   #receive: a string with the correct range of hour format
   #return: the intervals of two hours to search and reserve the rooms
   def intervals_to_reserve(range)
