@@ -7,6 +7,7 @@ class User < ApplicationRecord
   before_save :format_downcase
 
   has_many :tokens, dependent: :destroy
+  has_one :storage, dependent: :destroy
   has_many :members, dependent: :destroy
   has_many :groups, :through => :members
 

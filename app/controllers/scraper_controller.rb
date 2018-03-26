@@ -5,17 +5,19 @@ class ScraperController < ApplicationController
 
   def student_schedule
     @sl.login_pomelo?(params[:user], params[:password])
-    render_ok @sp.student_info()
+    result = @sp.student_info()
+    Storage.create(path:@sp.save(Storage.get_path), user_id:@current_user.id)
+    render_ok result
   end
 
   def conflict_matrix
-    if @token.storage
-      @sp.load(@token.storage.path)
-      @token.storage.destroy
+    if @current_user.storage
+      @sp.load(@current_user.storage.path)
+      @current_user.storage.destroy
     end
     @sl.login_pomelo?(params[:user], params[:password])
     result = @sp.student_info(true)
-    Storage.create(path:@sp.save(Storage.get_path), token_id:@token.id)
+    Storage.create(path:@sp.save(Storage.get_path), user_id:@current_user.id)
     render_ok result
   end
 

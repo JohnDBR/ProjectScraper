@@ -1,7 +1,6 @@
 class Token < ApplicationRecord
   belongs_to :user
-  has_one :storage, dependent: :destroy
-
+  
   validates :secret, :expire_at, presence: true
   validates :secret, uniqueness: true
 
