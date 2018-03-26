@@ -27,9 +27,14 @@ class SessionsController < ApplicationController
     auth.start_session({email:params[:email], username:params[:username], password:params[:password]})
     if auth.allowed?
       link = Link.where(secret:params[:link]).first
-      Member.create(alias:params[:alias], group_id:link.group_id, user_id:auth.user.id, admin:false)
-      link.destroy
-      render json: auth.token, status: :created 
+      member = Member.where(group_id:link.group_id, user_id:auth.user.id).first
+      if member
+        render json: {authorization: "already in", token: auth.token}, status: :unprocessable_entity        
+      else
+        Member.create(alias:params[:alias], group_id:link.group_id, user_id:auth.user.id, admin:false)
+        link.destroy
+        render json: auth.token, status: :created
+      end  
     else
       render json: auth.errors, status: :unauthorized 
     end

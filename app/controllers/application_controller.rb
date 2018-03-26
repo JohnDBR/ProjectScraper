@@ -18,6 +18,10 @@ class ApplicationController < ActionController::API
       @token = Token.find_by(secret: key)
       @current_user = @token.user if @token
     end
+    # request.headers.each do |key, options|
+    #   pp key
+    #   pp options
+    # end
   end
 
   def is_current_user_admin
