@@ -8,7 +8,7 @@ class GroupsController < ApplicationController
   def create
     group = Group.new(name:params[:name])
     save_and_render group
-    Member.create(alias:params[:alias], group_id:group.id, user_id:@current_user.id, admin:params[:admin])
+    Member.create(alias:params[:alias], group_id:group.id, user_id:@current_user.id, admin:true)
   end
 
   def update 
@@ -34,6 +34,6 @@ class GroupsController < ApplicationController
   end
 
   def is_group_admin?
-    return Member.where(group_id:@group.id, user_id:@current_user.id).admin
+    return Member.where(group_id:@group.id, user_id:@current_user.id).first.admin
   end
 end

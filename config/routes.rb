@@ -12,7 +12,7 @@ Rails.application.routes.draw do
   resources :groups, only: [:index, :create, :update, :destroy]
   # get 'groups', to: 'groups#index'
 
-  namespace :groups do
+  resources :groups do
     resources :members, only: [:show, :index, :create, :update, :destroy]
     # get ':group_id/members/:id', to: 'members#show'
   end
