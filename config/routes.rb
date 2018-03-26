@@ -5,12 +5,16 @@ Rails.application.routes.draw do
 
   resources :sessions, only: :create
   delete 'sessions', to: 'sessions#destroy'
+  post 'sessions/:link', to: 'sessions#guest_create'
 
   post 'scraper/student_schedule', to: 'scraper#student_schedule'
   post 'scraper/conflict_matrix', to: 'scraper#conflict_matrix'
 
   resources :groups, only: [:index, :create, :update, :destroy]
   # get 'groups', to: 'groups#index'
+  get 'groups/:id/link', to: 'groups#create_link'
+  post 'groups/:link', to: 'groups#open_link'
+  delete 'groups/:link', to: 'groups#delete_link'
 
   resources :groups do
     resources :members, only: [:show, :index, :create, :update, :destroy]

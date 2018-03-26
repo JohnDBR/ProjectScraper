@@ -44,9 +44,15 @@ class GroupsController < ApplicationController
     if @current_user
       Member.create(alias:params[:alias], group_id:link.group_id, user_id:@current_user.id, admin:false)
       render_ok link.destroy
-    else
+    elsif link
       render json: {message: "Welcome!"}, status: :guest_access
+    else
+      permissions_error
     end
+  end
+
+  def destroy_link
+    render_ok Link.where(secret:params[:link]).first.destroy
   end
 
   private 

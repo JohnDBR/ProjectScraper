@@ -22,6 +22,19 @@ class SessionsController < ApplicationController
     render json: {errors: "invalid token"}, status: :bad_request unless token
   end
 
+  def guest_create
+    auth = Authentication.new
+    auth.start_session({email:params[:email], username:params[:username], password:params[:password]})
+    if auth.allowed?
+      link = Link.where(secret:params[:link]).first
+      Member.create(alias:params[:alias], group_id:link.group_id, user_id:auth.user.id, admin:false)
+      link.destroy
+      render json: auth.token, status: :created 
+    else
+      render json: auth.errors, status: :unauthorized 
+    end
+  end
+
   private
   def session_params
     params.permit(:email, :username, :password)
