@@ -8,11 +8,16 @@ class ApplicationController < ActionController::API
 
   protected
   def get_current_user
+    set_user_by_token
+    raise Exceptions::CurrentUserNotFound unless @current_user
+  end
+
+  def set_user_by_token
+    @current_user = nil
     authenticate_with_http_token do |key, options|
       @token = Token.find_by(secret: key)
       @current_user = @token.user if @token
     end
-    raise Exceptions::CurrentUserNotFound unless @current_user
   end
 
   def is_current_user_admin
