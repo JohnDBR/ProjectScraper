@@ -1,6 +1,4 @@
 class Storage < ApplicationRecord
-  belongs_to :user
-
   validates :path, presence: true
   
   after_destroy :delete_file
