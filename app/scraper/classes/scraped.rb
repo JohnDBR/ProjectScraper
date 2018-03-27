@@ -21,6 +21,10 @@ class Scraped
     "Sunday"    => {}
   }
 
+  def temporal_student
+    @@temporal_student
+  end
+
   def load(path)
     hash = FileModule.deserialize(path.split("/").last.split(".").first)
     @@temporal_student = hash[:temporal_student]
