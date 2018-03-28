@@ -6,7 +6,8 @@ class ScraperController < ApplicationController
   def student_schedule
     @sl.login_pomelo?(params[:user], params[:password])
     result = @sp.student_info()
-    @current_user.storage = Storage.new(path:@sp.save(Storage.get_path))
+    s = Storage.create(path:@sp.save(Storage.get_path))
+    @current_user.update_attribute(:storage_id, s.id)
     render_ok result
   end
 
@@ -17,7 +18,7 @@ class ScraperController < ApplicationController
     end
     @sl.login_pomelo?(params[:user], params[:password])
     result = @sp.student_info(true)
-    @current_user.storage = Storage.new(path:@sp.save(Storage.get_path))
+    @current_user.storage = Storage.create(path:@sp.save(Storage.get_path))
     render_ok result
   end
 
