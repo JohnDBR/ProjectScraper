@@ -18,11 +18,13 @@ Rails.application.routes.draw do
     resources :members, only: [:show, :index, :create, :update, :destroy]
     # get ':group_id/members/:id', to: 'members#show'
   end
+  post 'groups/:id/add_schedules', to: 'groups#add_schedules'
 
   resources :groups do
     resources :links, only: [:create]
   end
   post 'groups/links/:link', to: 'links#open'
+  post 'groups/links/guest_schedules/:link', to: 'links#guest_schedules'
   delete 'groups/links/:link', to: 'links#destroy'
 
 end
