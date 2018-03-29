@@ -5,6 +5,7 @@ class ScraperController < ApplicationController
   before_action :set_group, only: [:add_schedules]
 
   def student_schedule
+    @current_user.storage.destroy if @current_user.storage
     @sl.login_pomelo?(params[:user], params[:password])
     result = @sp.student_info()
     s = Storage.create(path:@sp.save(Storage.get_path))
