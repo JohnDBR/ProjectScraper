@@ -25,8 +25,12 @@ class MembersController < ApplicationController
       user = User.find_by(email: params[:email].downcase)
       user = User.find_by(username: params[:username].downcase) unless user
       if user
-        member = Member.new(group_id:params[:group_id].to_i, user_id:user.id, alias:params[:alias], admin:params[:admin])
-        save_and_render member
+        unless Member.where(group_id:params[:group_id].to_i, user_id:user.id).first
+          member = Member.new(group_id:params[:group_id].to_i, user_id:user.id, alias:params[:alias], admin:params[:admin])
+          save_and_render member
+        else
+          render json: {authorization: "already in"}, status: :unprocessable_entity  
+        end
       else
         render json: {single_authentication: 'invalid credentials'}, status: :unauthorized 
       end
