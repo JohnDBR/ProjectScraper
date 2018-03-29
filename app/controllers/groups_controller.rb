@@ -1,5 +1,5 @@
 class GroupsController < ApplicationController
-  before_action :set_group, only: [:update, :destroy, :add_schedules]
+  before_action :set_group, only: [:update, :destroy, :schedule, :add_schedules]
 
   def index
     render_ok @current_user.groups
@@ -29,13 +29,25 @@ class GroupsController < ApplicationController
   end
 
   def schedule 
-    # if @current_user.storage
-    #   sp = ScrapingPomelo.new
-    #   sp.load(@current_user.storage.path)
-    #   render_ok sp.temporal_student.schedule
-    # else
-    #   render json: {message: "the schedule isn't fetched"}, status: :unprocessable_entity 
-    # end
+    if is_current_user_member
+      s = ScraperHelper.new
+      sp = ScrapingPomelo.new
+      if @group.storage
+        sp.load(@group.storage.path)
+        s.join_schedules(sp.conflict_matrix)
+      end
+      @group.members.map do |member| #.map is required to iterate through ActiveRecord::Associations::CollectionProxy element, it is not an array...
+        if member.user.storage
+          sp.load(member.user.storage.path)
+          s.join_schedules(sp.temporal_student.schedule, member.alias)
+        else
+          s.add_errors(member.alias)
+        end
+      end
+      render json: {json: s.conflict_matrix, errors: s.errors}, status: :ok
+    else
+      permissions_error
+    end
   end
 
   def add_schedules

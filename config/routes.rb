@@ -19,6 +19,7 @@ Rails.application.routes.draw do
     # get ':group_id/members/:id', to: 'members#show'
   end
   post 'groups/:id/add_schedules', to: 'groups#add_schedules'
+  get 'groups/:id/schedule', to: 'groups#schedule'
 
   resources :groups do
     resources :links, only: [:create]
