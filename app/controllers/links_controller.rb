@@ -1,6 +1,6 @@
 class LinksController < ApplicationController
-  skip_before_action :get_current_user, only: [:open, :destroy, :guest_schedules]
-  before_action :set_link, only: [:open, :guest_schedules, :destroy]
+  skip_before_action :get_current_user, only: [:open, :destroy, :add_schedules, :schedule]
+  before_action :set_link, only: [:open, :destroy, :add_schedules, :schedule]
 
   def create
     if is_current_user_member
@@ -28,7 +28,7 @@ class LinksController < ApplicationController
     end
   end
 
-  def guest_schedules
+  def add_schedules
     if @link
       sl = ScrapingAuthenticate.new
       sp = ScrapingPomelo.new
@@ -42,6 +42,29 @@ class LinksController < ApplicationController
       s = Storage.create(path:sp.save(Storage.get_path))
       group.update_attribute(:storage_id, s.id)
       render_ok result
+    else
+      permissions_error
+    end
+  end
+
+  def schedule 
+    if @link
+      s = ScraperHelper.new
+      sp = ScrapingPomelo.new
+      group = @link.group
+      if group.storage
+        sp.load(group.storage.path)
+        s.join_schedules(sp.conflict_matrix)
+      end
+      group.members.map do |member| #.map is required to iterate through ActiveRecord::Associations::CollectionProxy element, it is not an array...
+        if member.user.storage
+          sp.load(member.user.storage.path)
+          s.join_schedules(sp.temporal_student.schedule, member.alias)
+        else
+          s.add_errors(member.alias)
+        end
+      end
+      render json: {json: s.conflict_matrix, errors: s.errors}, status: :ok
     else
       permissions_error
     end

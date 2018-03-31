@@ -25,7 +25,8 @@ Rails.application.routes.draw do
     resources :links, only: [:create]
   end
   post 'groups/links/:link', to: 'links#open'
-  post 'groups/links/guest_schedules/:link', to: 'links#guest_schedules'
+  post 'groups/links/add_schedules/:link', to: 'links#add_schedules'
+  get 'groups/links/schedule/:link', to: 'links#schedule'
   delete 'groups/links/:link', to: 'links#destroy'
 
 end
