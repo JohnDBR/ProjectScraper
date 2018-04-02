@@ -39,6 +39,6 @@ class ScraperHelper
   end
 
   def add_errors(member_alias)
-    @errors[:schedule_not_fetched] = "#{@errors[:schedule_not_fetched]}, #{member_alias}"
+    @errors[:schedule_not_fetched] = "#{member_alias} #{@errors[:schedule_not_fetched]}"
   end
 end
