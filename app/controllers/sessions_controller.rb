@@ -31,9 +31,9 @@ class SessionsController < ApplicationController
       if member
         render json: {authorization: "already in", token: auth.token}, status: :unprocessable_entity        
       else
-        Member.create(alias:params[:alias], group_id:link.group_id, user_id:auth.user.id, admin:false)
-        link.destroy
-        render json: auth.token, status: :created
+        member = Member.create(alias:params[:alias], group_id:link.group_id, user_id:auth.user.id, admin:false)
+        link = link.destroy
+        render json: {token:auth.token, link:link, member:member}, status: :created
       end  
     else
       render json: auth.errors, status: :unauthorized 

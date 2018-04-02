@@ -18,8 +18,8 @@ class LinksController < ApplicationController
       if member
         render json: {authorization: "already in"}, status: :unprocessable_entity        
       else
-        Member.create(alias:params[:alias], group_id:@link.group_id, user_id:@current_user.id, admin:false)
-        render_ok @link.destroy
+        member = Member.create(alias:params[:alias], group_id:@link.group_id, user_id:@current_user.id, admin:false)
+        render_ok {link:@link.destroy, member:member}
       end
     elsif @link
       render json: {guest: "Welcome!"}, status: :ok
