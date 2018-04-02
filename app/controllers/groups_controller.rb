@@ -1,8 +1,16 @@
 class GroupsController < ApplicationController
-  before_action :set_group, only: [:update, :destroy, :schedule, :add_schedules]
+  before_action :set_group, only: [:show, :update, :destroy, :schedule, :add_schedules]
 
   def index
     render_ok @current_user.groups
+  end
+
+  def show
+    if @group.user_id == @current_user.id
+      render_ok @group
+    elsif is_current_user_admin.nil?
+      render_ok @group
+    end
   end
 
   def create
