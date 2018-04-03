@@ -47,7 +47,7 @@ class ScraperHelper
           if member_alias.nil?
             @conflict_matrix[key]["#{n}:30 - #{n+1}:30"] = "#{@conflict_matrix[key]["#{n}:30 - #{n+1}:30"]} #{input}" 
           else
-            @conflict_matrix[key]["#{n}:30 - #{n+1}:30"] = "#{@conflict_matrix[key]["#{n}:30 - #{n+1}:30"]} #{member_alias}" 
+            @conflict_matrix[key]["#{n}:30 - #{n+1}:30"] = "#{@conflict_matrix[key]["#{n}:30 - #{n+1}:30"]} -#{member_alias}-" 
           end
         end
       end
@@ -58,7 +58,11 @@ class ScraperHelper
     @conflict_matrix.each do |key,value|
       (6..20).each do |n| 
         input = @conflict_matrix[key]["#{n}:30 - #{n+1}:30"]
-        @conflict_matrix[key]["#{n}:30 - #{n+1}:30"] = "0" if input.empty? || input.nil? || input.eql?("") 
+        if input.empty? || input.nil? || input.eql?("")
+          @conflict_matrix[key]["#{n}:30 - #{n+1}:30"] = "0"  
+        else
+          @conflict_matrix[key]["#{n}:30 - #{n+1}:30"] = input.split.map! { |name| name = "-#{name}-" }.join(" ")
+        end
       end
     end
     @conflict_matrix
