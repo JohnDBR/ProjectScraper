@@ -39,19 +39,7 @@ class GroupsController < ApplicationController
   def schedule 
     if is_current_user_member
       s = ScraperHelper.new
-      sp = ScrapingPomelo.new
-      if @group.storage
-        sp.load(@group.storage.path)
-        s.join_schedules(sp.conflict_matrix)
-      end
-      @group.members.map do |member| #.map is required to iterate through ActiveRecord::Associations::CollectionProxy element, it is not an array...
-        if member.user.storage
-          sp.load(member.user.storage.path)
-          s.join_schedules(sp.temporal_student.schedule, member.alias)
-        else
-          s.add_errors(member.alias)
-        end
-      end
+      s.create_conflict_matrix(@group)
       render json: {json: s.conflict_matrix, errors: s.errors}, status: :ok
     else
       permissions_error
@@ -60,17 +48,10 @@ class GroupsController < ApplicationController
 
   def add_schedules
     if is_current_user_member
-      sl = ScrapingAuthenticate.new
-      sp = ScrapingPomelo.new
-      if @group.storage
-        sp.load(@group.storage.path)
-        @group.storage.destroy
-      end
-      sl.login_pomelo?(params[:user], params[:password])
-      result = sp.student_info(true)
-      s = Storage.create(path:sp.save(Storage.get_path))
-      @group.update_attribute(:storage_id, s.id)
-      render_ok result
+      s = ScraperHelper.new
+      s.add_schedule_to_storage(@group, params)
+      s.create_conflict_matrix(@group)
+      render json: {json: s.conflict_matrix, errors: s.errors}, status: :ok
     else
       permissions_error
     end

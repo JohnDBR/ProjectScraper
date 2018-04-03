@@ -19,7 +19,7 @@ class LinksController < ApplicationController
         render json: {authorization: "already in"}, status: :unprocessable_entity        
       else
         member = Member.create(alias:params[:alias], group_id:@link.group_id, user_id:@current_user.id, admin:false)
-        render_ok {link:@link.destroy, member:member}
+        render json: {link:@link.destroy, member:member}, status: :ok
       end
     elsif @link
       render json: {guest: "Welcome!"}, status: :ok
@@ -30,18 +30,11 @@ class LinksController < ApplicationController
 
   def add_schedules
     if @link
-      sl = ScrapingAuthenticate.new
-      sp = ScrapingPomelo.new
       group = @link.group
-      if group.storage
-        sp.load(group.storage.path)
-        group.storage.destroy
-      end
-      sl.login_pomelo?(params[:user], params[:password])
-      result = sp.student_info(true)
-      s = Storage.create(path:sp.save(Storage.get_path))
-      group.update_attribute(:storage_id, s.id)
-      render_ok result
+      s = ScraperHelper.new
+      s.add_schedule_to_storage(group, params)
+      s.create_conflict_matrix(group)
+      render json: {json: s.conflict_matrix, errors: s.errors}, status: :ok
     else
       permissions_error
     end
@@ -50,20 +43,8 @@ class LinksController < ApplicationController
   def schedule 
     if @link
       s = ScraperHelper.new
-      sp = ScrapingPomelo.new
       group = @link.group
-      if group.storage
-        sp.load(group.storage.path)
-        s.join_schedules(sp.conflict_matrix)
-      end
-      group.members.map do |member| #.map is required to iterate through ActiveRecord::Associations::CollectionProxy element, it is not an array...
-        if member.user.storage
-          sp.load(member.user.storage.path)
-          s.join_schedules(sp.temporal_student.schedule, member.alias)
-        else
-          s.add_errors(member.alias)
-        end
-      end
+      s.create_conflict_matrix(group)
       render json: {json: s.conflict_matrix, errors: s.errors}, status: :ok
     else
       permissions_error
