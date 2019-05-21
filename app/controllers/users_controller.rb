@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :update, :destroy]
-  before_action :is_current_user_admin, only: [:index, :create, :update, :destroy]
+  before_action :is_current_user_admin, only: [:index, :update, :destroy]
 
   def index 
     render_ok User.all
