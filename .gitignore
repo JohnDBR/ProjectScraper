@@ -23,3 +23,8 @@
 Gemfile.lock 
 db/schema.rb
 db/*.data
+
+#Run server output files
+2003
+nohup.out
+nano.save
