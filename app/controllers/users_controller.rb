@@ -1,4 +1,5 @@
 class UsersController < ApplicationController
+  skip_before_action :get_current_user, only: [:create]
   before_action :set_user, only: [:show, :update, :destroy]
   before_action :is_current_user_admin, only: [:index, :update, :destroy]
 
