@@ -23,6 +23,7 @@ class ScraperHelper
     end
   end
 
+  #receive: an entity group
   def create_conflict_matrix(group)
     sp = ScrapingPomelo.new
     if group.storage
@@ -39,6 +40,7 @@ class ScraperHelper
     end
   end
 
+  #receive: a hash that represents a schecduel and a string that represents a member alias
   def join_schedules(schedule, member_alias = nil)
     @conflict_matrix.each do |key,value|
       (6..20).each do |n|
@@ -69,10 +71,14 @@ class ScraperHelper
     @conflict_matrix
   end
 
+  #receive: a string that represents a member alias
+  #return: the new array of errors with the member that couldn't being added
   def add_errors(member_alias)
     @errors[:schedule_not_fetched] = "-#{member_alias}- #{@errors[:schedule_not_fetched]}"
   end
 
+  #receive: an entity group and the params of an HTTP request
+  #return: true if the the schedule of the person was added to the group or false if it didn't happen
   def add_schedule_to_storage(group, params)
     sl = ScrapingAuthenticate.new
     sp = ScrapingPomelo.new
@@ -80,9 +86,13 @@ class ScraperHelper
       sp.load(group.storage.path)
       group.storage.destroy
     end
-    sl.login_pomelo?(params[:user], params[:password])
-    sp.student_info(true)
-    s = Storage.create(path:sp.save(Storage.get_path))
-    group.update_attribute(:storage_id, s.id)
+    if sl.login_pomelo?(params[:user], params[:password])
+      sp.student_info(true)
+      s = Storage.create(path:sp.save(Storage.get_path))
+      group.update_attribute(:storage_id, s.id)
+      return true
+    else
+      return false
+    end  
   end
 end

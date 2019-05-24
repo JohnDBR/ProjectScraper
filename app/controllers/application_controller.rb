@@ -36,6 +36,10 @@ class ApplicationController < ActionController::API
     render json: {authorization: 'you dont have permissions'}, status: :permissions_error
   end
 
+  def uninorte_authentication_error
+    render json: {authorization: 'uninorte invalid credentials'}, status: :unprocessable_entity
+  end
+
   def render_ok(obj)
     render json: obj, status: :ok
   end

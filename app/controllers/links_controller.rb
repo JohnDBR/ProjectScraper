@@ -32,9 +32,12 @@ class LinksController < ApplicationController
     if @link
       group = @link.group
       s = ScraperHelper.new
-      s.add_schedule_to_storage(group, params)
-      s.create_conflict_matrix(group)
-      render json: {json: s.conflict_matrix, errors: s.errors}, status: :ok
+      if s.add_schedule_to_storage(group, params)
+        s.create_conflict_matrix(group)
+        render json: {json: s.conflict_matrix, errors: s.errors}, status: :ok
+      else
+        uninorte_authentication_error
+      end
     else
       permissions_error
     end
