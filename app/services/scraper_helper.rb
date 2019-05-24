@@ -79,14 +79,20 @@ class ScraperHelper
 
   #receive: an entity group and the params of an HTTP request
   #return: true if the the schedule of the person was added to the group or false if it didn't happen
-  def add_schedule_to_storage(group, params)
+  def add_schedule_to_storage(group, params) 
     sl = ScrapingAuthenticate.new
     sp = ScrapingPomelo.new
     if group.storage
       sp.load(group.storage.path)
     end
     if sl.login_pomelo?(params[:user], params[:password])
-      group.storage.destroy
+      group.storage.destroy if group.storage
+
+      ## The whole group.storage thing could be here
+      ## But for some reason if the pomelo login
+      ## is done first then the group schedule 
+      ## Wouldn't be modified!
+
       sp.student_info(true)
       s = Storage.create(path:sp.save(Storage.get_path))
       group.update_attribute(:storage_id, s.id)

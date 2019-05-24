@@ -21,6 +21,10 @@ class Scraped
     "Sunday"    => {}
   }
 
+  def initialize 
+    fill_conflict_matrix() 
+  end
+
   def temporal_student
     @@temporal_student
   end
@@ -42,10 +46,6 @@ class Scraped
     }
     FileModule.web_serialize(package, "db/#{path.split("/").last}")
     return path
-  end
-
-  def initialize 
-    fill_conflict_matrix() 
   end
 
   #return: conflict matrix structure
