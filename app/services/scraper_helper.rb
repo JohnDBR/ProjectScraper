@@ -84,9 +84,9 @@ class ScraperHelper
     sp = ScrapingPomelo.new
     if group.storage
       sp.load(group.storage.path)
-      group.storage.destroy
     end
     if sl.login_pomelo?(params[:user], params[:password])
+      group.storage.destroy
       sp.student_info(true)
       s = Storage.create(path:sp.save(Storage.get_path))
       group.update_attribute(:storage_id, s.id)
