@@ -20,7 +20,7 @@ class GroupsController < ApplicationController
   end
 
   def update 
-    if is_group_admin?
+    if is_group_admin?(@group.id)
       @group.update_attribute(:name, params[:name])
       save_and_render @group
     else
@@ -29,7 +29,7 @@ class GroupsController < ApplicationController
   end
 
   def destroy
-    if is_group_admin?
+    if is_group_admin?(@group.id)
       render_ok @group.destroy      
     else 
       permissions_error 
@@ -37,7 +37,7 @@ class GroupsController < ApplicationController
   end
 
   def schedule 
-    if is_current_user_member
+    if is_current_user_member(params[:id])
       s = ScraperHelper.new
       s.create_conflict_matrix(@group)
       render json: {json: s.conflict_matrix, errors: s.errors}, status: :ok
@@ -47,7 +47,7 @@ class GroupsController < ApplicationController
   end
 
   def add_schedules
-    if is_current_user_member
+    if is_current_user_member(params[:id])
       s = ScraperHelper.new
       if s.add_schedule_to_storage(@group, params)
         s.create_conflict_matrix(@group)
@@ -65,11 +65,11 @@ class GroupsController < ApplicationController
     @group = @current_user.groups.find params[:id]
   end
 
-  def is_current_user_member
-    return Member.where(group_id:params[:id].to_i, user_id:@current_user.id).first
-  end
+  # def is_current_user_member
+  #   return Member.where(group_id:params[:id].to_i, user_id:@current_user.id).first
+  # end
 
-  def is_group_admin?
-    return Member.where(group_id:@group.id, user_id:@current_user.id).first.admin
-  end
+  # def is_group_admin?
+  #   return Member.where(group_id:@group.id, user_id:@current_user.id).first.admin
+  # end
 end

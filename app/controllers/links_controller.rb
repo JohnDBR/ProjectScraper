@@ -3,7 +3,7 @@ class LinksController < ApplicationController
   before_action :set_link, only: [:open, :destroy, :add_schedules, :schedule]
 
   def create
-    if is_current_user_member
+    if is_current_user_member(params[:group_id])
       link = Link.new(group_id:params[:group_id].to_i)
       save_and_render link
     else
@@ -63,7 +63,7 @@ class LinksController < ApplicationController
     @link = Link.where(secret:params[:link]).first
   end
 
-  def is_current_user_member
-    return Member.where(group_id:params[:group_id].to_i, user_id:@current_user.id).first
-  end
+  # def is_current_user_member
+  #   return Member.where(group_id:params[:group_id].to_i, user_id:@current_user.id).first
+  # end
 end

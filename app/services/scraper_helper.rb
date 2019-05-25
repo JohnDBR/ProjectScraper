@@ -88,10 +88,14 @@ class ScraperHelper
     if sl.login_pomelo?(params[:user], params[:password])
       group.storage.destroy if group.storage
 
-      ## The whole group.storage thing could be here
-      ## But for some reason if the pomelo login
-      ## is done first then the group schedule 
-      ## Wouldn't be modified!
+      ## The .load storage brings the last temporal user fetched too.
+      ## So if a new user is going to be fetched the .load couldn't being  
+      ## executed after him/her .login pomelo because the scraping authenticate 
+      ## takes the name of the temporal user while .login.
+
+      ## In other words, the .student_info is being executed but the name inside 
+      ## the matrix is the one from the student loaded. Then the repeated cells are
+      ## deleted by the .unique
 
       sp.student_info(true)
       s = Storage.create(path:sp.save(Storage.get_path))

@@ -32,6 +32,18 @@ class ApplicationController < ActionController::API
     permissions_error unless @current_user.role.eql? "normal"
   end
 
+  def is_current_user_member(group_id)
+    m = Member.where(group_id:group_id.to_i, user_id:@current_user.id)
+    return false if m.empty?
+    return m.first
+  end
+
+  def is_group_admin(group_id)
+    m = Member.where(group_id:group_id, user_id:@current_user.id)
+    return false if m.empty?
+    return m.first.admin
+  end
+
   def permissions_error
     render json: {authorization: 'you dont have permissions'}, status: :permissions_error
   end
