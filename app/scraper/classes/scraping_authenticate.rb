@@ -21,7 +21,7 @@ class ScrapingAuthenticate < Scraped
       page = BotModule.get_page('https://pomelo.uninorte.edu.co/pls/prod/bwckcapp.P_DispCurrent') #Empanadita con queso...
       code_name = page.parser.css('.staticheaders').text.split("\n")[1].split(' ')
       name = code_name[1..-1].join(' ') 
-      @@temporal_student = Student.new(name, code_name[0], user, password)        
+      @@temporal_student = Student.new(name, code_name[0], user)#, password)        
     end
     return login_status
   end

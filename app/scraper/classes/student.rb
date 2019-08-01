@@ -1,13 +1,13 @@
 class Student
   
-  attr_reader :name, :code, :username, :password
+  attr_reader :name, :code, :username#, :password
   attr_accessor :schedule
   
-  def initialize(name, code, username, password)
+  def initialize(name, code, username)#, password)
     #username: a string with the username of uninorte domains
     @username = username
     #password: a string with the password of uninorte domains
-    @password = password
+    # @password = password
     #name: a string with the name of the student
     @name = name
     #code: a string with the university code of the student
