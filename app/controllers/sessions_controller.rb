@@ -1,13 +1,24 @@
 class SessionsController < ApplicationController
   skip_before_action :get_current_user 
+  before_action :initialize_authenticate_scraper, only: [:create]
+  # before_action :initialize_pomelo_scraper, only: [:create]
 
-  def create
-    auth = Authentication.new
-    auth.start_session(session_params)
-    if auth.allowed?
-      render json: auth.token, status: :created #We should have a method to render in the application_controller too, like save_and_render...
+  def create    
+    if @sl.login_pomelo?(params[:user], params[:password])
+      if user = User.find_by(username: params[:user].downcase)
+        token = Token.create(user:user) 
+        render json: token, status: :created
+      else
+        user = User.new(username:(params[:user]) #role:0,
+        if user.save
+          token = Token.create(user:user) 
+          render json: token, status: :created 
+        else
+          render json: {errors:user.errors.messages}, status: :unprocessable_entity
+        end
+      end
     else
-      render json: auth.errors, status: :unauthorized #We should have a method to render in the application_controller too, like save_and_render...  
+      uninorte_authentication_error
     end
   end
 
@@ -16,13 +27,13 @@ class SessionsController < ApplicationController
     authenticate_with_http_token do |key, options|
       token = Token.find_by(secret: key)
       if token
-        render_ok token.destroy #Here we are ussing a method in the application_controller...
+        render_ok token.destroy 
       end  
     end   
     render json: {errors: "invalid token"}, status: :bad_request unless token
   end
 
-  def guest_create
+  def guest_create #Auth
     auth = Authentication.new
     auth.start_session({email:params[:email], username:params[:username], password:params[:password]})
     if auth.allowed?
@@ -43,5 +54,13 @@ class SessionsController < ApplicationController
   private
   def session_params
     params.permit(:email, :username, :password)
+  end
+
+  def user_params
+    params.permit(
+      #:email,
+      #:password,
+      :username
+    )
   end
 end

@@ -9,7 +9,7 @@ class ScraperController < ApplicationController
     @sl.login_pomelo?(params[:user], params[:password])
     result = @sp.student_info()
     s = Storage.create(path:@sp.save(Storage.get_path))
-    @current_user.update_attribute(:storage_id, s.id)
+    @current_user.update_attributes(storage_id:s.id, full_name:@sp.temporal_student.name)
     render_ok result
   end
 

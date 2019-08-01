@@ -1,8 +1,8 @@
 class User < ApplicationRecord
-  has_secure_password
+  #has_secure_password
 
-  validates :email, :username, presence: true, uniqueness: true
-  validates :password, :role, presence: true, on: :create
+  validates :username, presence: true, uniqueness: true #:email,
+  # validates :role, presence: true, on: :create #:password,
 
   before_save :format_downcase
 
@@ -13,7 +13,7 @@ class User < ApplicationRecord
 
   protected 
   def format_downcase
-    self.email.downcase!
+    #self.email.downcase!
     self.username.downcase!
   end
 end
