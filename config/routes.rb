@@ -9,7 +9,7 @@ Rails.application.routes.draw do
   post 'sessions/:link', to: 'sessions#guest_create'
 
   post 'scraper/student_schedule', to: 'scraper#student_schedule'
-  post 'scraper/conflict_matrix', to: 'scraper#conflict_matrix'
+  # post 'scraper/conflict_matrix', to: 'scraper#conflict_matrix'
 
   resources :groups, only: [:index, :show, :create, :update, :destroy]
   # get 'groups', to: 'groups#index'

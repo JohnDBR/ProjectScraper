@@ -46,7 +46,7 @@ class GroupsController < ApplicationController
     end
   end
 
-  def add_schedules
+  def add_schedules #This method is not going to be used due to Unimatrix requirements! ...
     if is_current_user_member(params[:id])
       s = ScraperHelper.new
       if s.add_schedule_to_storage(@group, params)

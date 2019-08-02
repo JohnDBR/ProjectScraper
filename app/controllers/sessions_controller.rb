@@ -33,7 +33,9 @@ class SessionsController < ApplicationController
     render json: {errors: "invalid token"}, status: :bad_request unless token
   end
 
-  def guest_create #Auth
+  #This method does exactly the same as open#links but you can use an alias here
+  def guest_create #This method is not going to be used due to Unimatrix requirements! ...
+    #Authentication deprecated! The service is no longer supported
     auth = Authentication.new
     auth.start_session({email:params[:email], username:params[:username], password:params[:password]})
     if auth.allowed?
