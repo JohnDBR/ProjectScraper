@@ -11,7 +11,7 @@ class MembersController < ApplicationController
   end
 
   def index
-    if is_current_user_member?(params[:group_id])
+    if is_current_user_member(params[:group_id])
       render_ok @group.members
     else
       permissions_error
@@ -26,7 +26,9 @@ class MembersController < ApplicationController
       user = User.find_by(username: params[:username].downcase) unless user
       if user
         unless Member.where(group_id:params[:group_id].to_i, user_id:user.id).first
-          member = Member.new(group_id:params[:group_id].to_i, user_id:user.id, alias:params[:alias], admin:params[:admin])
+          member_alias = ""
+          member_alias = params[:alias] if params[:alias]
+          member = Member.new(group_id:params[:group_id].to_i, user_id:user.id, alias:member_alias, admin:params[:admin])
           save_and_render member
         else
           render json: {authorization: "already in"}, status: :unprocessable_entity  
@@ -40,15 +42,17 @@ class MembersController < ApplicationController
   end
 
   def update 
+    member_alias = ""
+    member_alias = params[:alias] if params[:alias]
     if is_group_admin?(@group.id) and is_a_group_member?
       if !params[:admin].nil?
-        @member.update_attributes(alias:params[:alias], admin:params[:admin])
+        @member.update_attributes(alias:member_alias, admin:params[:admin])
       else
-        @member.update_attribute(:alias, params[:alias])
+        @member.update_attribute(:alias, member_alias)
       end 
       save_and_render @member
     elsif @member.user_id == @current_user.id
-      @member.update_attribute(:alias, params[:alias])
+      @member.update_attribute(:alias, member_alias)
       save_and_render @member
     else
       permissions_error

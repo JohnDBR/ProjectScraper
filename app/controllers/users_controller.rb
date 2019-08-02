@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
   skip_before_action :get_current_user, only: [:create]
   before_action :set_user, only: [:show, :update, :destroy]
-  before_action :is_current_user_admin, only: [:index, :update, :destroy]
+  before_action :is_current_user_admin, only: [:index] #, :update, :destroy
 
   def index 
     render_ok User.all
@@ -15,7 +15,7 @@ class UsersController < ApplicationController
     end
   end
 
-  def create
+  def create #This method is not going to be used due to Unimatrix requirements! ...
     user = User.new user_params
     save_and_render user
   end
@@ -48,7 +48,8 @@ class UsersController < ApplicationController
     params.permit(
       #:email,
       #:password,
-      :username
+      #:username, 
+      :full_name
     )
   end
 end

@@ -4,12 +4,12 @@ class SessionsController < ApplicationController
   # before_action :initialize_pomelo_scraper, only: [:create]
 
   def create    
-    if @sl.login_pomelo?(params[:user], params[:password])
-      if user = User.find_by(username: params[:user].downcase)
+    if @sl.login_pomelo?(params[:username], params[:password])
+      if user = User.find_by(username: params[:username].downcase)
         token = Token.create(user:user) 
         render json: token, status: :created
       else
-        user = User.new(username:(params[:user]) #role:0,
+        user = User.new(username:params[:username]) #role:0,
         if user.save
           token = Token.create(user:user) 
           render json: token, status: :created 
@@ -44,7 +44,9 @@ class SessionsController < ApplicationController
       if member
         render json: {authorization: "already in", token: auth.token}, status: :unprocessable_entity        
       else
-        member = Member.create(alias:params[:alias], group_id:link.group_id, user_id:auth.user.id, admin:false)
+        member_alias = ""
+        member_alias = params[:alias] if params[:alias]
+        member = Member.create(alias:member_alias, group_id:link.group_id, user_id:auth.user.id, admin:false)
         link = link.destroy
         render json: {token:auth.token, link:link, member:member}, status: :created
       end  
@@ -54,6 +56,10 @@ class SessionsController < ApplicationController
   end
 
   private
+  def initialize_authenticate_scraper
+    @sl = ScrapingAuthenticate.new
+  end
+
   def session_params
     params.permit(:email, :username, :password)
   end

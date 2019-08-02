@@ -16,7 +16,9 @@ class GroupsController < ApplicationController
   def create
     group = Group.new(name:params[:name])
     save_and_render group
-    Member.create(alias:params[:alias], group_id:group.id, user_id:@current_user.id, admin:true)
+    member_alias = ""
+    member_alias = params[:alias] if params[:alias]
+    Member.create(alias:member_alias, group_id:group.id, user_id:@current_user.id, admin:true)
   end
 
   def update 

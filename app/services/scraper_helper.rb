@@ -33,7 +33,11 @@ class ScraperHelper
     group.members.map do |member| #.map is required to iterate through ActiveRecord::Associations::CollectionProxy element, it is not an array...
       if member.user.storage
         sp.load(member.user.storage.path)
-        join_schedules(sp.temporal_student.schedule, member.alias)
+        if member.alias.eql?("")
+          join_schedules(sp.temporal_student.schedule)
+        else
+          join_schedules(sp.temporal_student.schedule, member.alias)
+        end
       else
         add_errors(member.alias)
       end
