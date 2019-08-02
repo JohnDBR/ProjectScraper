@@ -22,7 +22,7 @@ class GroupsController < ApplicationController
   end
 
   def update 
-    if is_group_admin?(@group.id)
+    if is_group_admin(@group.id)
       @group.update_attribute(:name, params[:name])
       save_and_render @group
     else

@@ -22,7 +22,7 @@ class LinksController < ApplicationController
 
   def open
     set_user_by_token
-    if @current_user
+    if @current_user and @link
       member = Member.where(group_id:@link.group_id, user_id:@current_user.id).first
       if member
         render json: {authorization: "already in"}, status: :unprocessable_entity        
@@ -66,12 +66,16 @@ class LinksController < ApplicationController
   end
 
   def destroy
-    render_ok @link.destroy
+    if @link
+      render_ok @link.destroy
+    else
+      render json: {record_not_found:"No link found!"}, status: :unprocessable_entity
+    end
   end
 
   private 
   def set_link
-    @link = Link.where(secret:params[:link]).first
+    @link = Link.find_by(secret:params[:link])
   end
 
   def set_group

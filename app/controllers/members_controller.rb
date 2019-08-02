@@ -1,5 +1,5 @@
 class MembersController < ApplicationController
-  before_action :set_group, only: [:index]
+  before_action :set_group, only: [:index, :create, :update, :destroy]
   before_action :set_member, only: [:show, :update, :destroy]
 
   def show
@@ -19,11 +19,11 @@ class MembersController < ApplicationController
   end
 
   def create
-    if is_group_admin?(@group.id)
-      params[:email] ||= ''
+    if is_group_admin(@group.id)
+      # params[:email] ||= ''
       params[:username] ||= ''
-      user = User.find_by(email: params[:email].downcase)
-      user = User.find_by(username: params[:username].downcase) unless user
+      # user = User.find_by(email: params[:email].downcase)
+      user = User.find_by(username: params[:username].downcase) #unless user
       if user
         unless Member.where(group_id:params[:group_id].to_i, user_id:user.id).first
           member_alias = ""
@@ -60,7 +60,7 @@ class MembersController < ApplicationController
   end
 
   def destroy
-    if is_group_admin?(@group.id) and is_a_group_member?
+    if is_group_admin(@group.id) and is_a_group_member?
       render_ok @member.destroy  
     elsif @member.user_id == @current_user.id
       render_ok @member.destroy  
@@ -77,14 +77,6 @@ class MembersController < ApplicationController
   def set_member
     @member = Member.find params[:id]
   end
-
-  # def is_current_user_member?
-  #   return Member.where(group_id:params[:group_id].to_i, user_id:@current_user.id).first
-  # end
-
-  # def is_group_admin?
-  #   return Member.where(group_id:params[:group_id].to_i, user_id:@current_user.id).first.admin
-  # end
 
   def is_a_group_member?
     return @member.group_id.to_s == params[:group_id]
