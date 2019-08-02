@@ -44,7 +44,7 @@ class MembersController < ApplicationController
   def update 
     member_alias = ""
     member_alias = params[:alias] if params[:alias]
-    if is_group_admin?(@group.id) and is_a_group_member?
+    if is_group_admin(@group.id) and is_a_group_member?
       if !params[:admin].nil?
         @member.update_attributes(alias:member_alias, admin:params[:admin])
       else

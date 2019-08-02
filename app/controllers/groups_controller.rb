@@ -31,7 +31,7 @@ class GroupsController < ApplicationController
   end
 
   def destroy
-    if is_group_admin?(@group.id)
+    if is_group_admin(@group.id)
       render_ok @group.destroy      
     else 
       permissions_error 
