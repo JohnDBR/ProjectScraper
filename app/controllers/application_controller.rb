@@ -3,8 +3,38 @@ class ApplicationController < ActionController::API
 
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
   rescue_from Exceptions::CurrentUserNotFound, with: :if_user_not_found
+  rescue_from Exceptions::TokenExpired, with: :if_token_expired
 
   before_action :get_current_user
+
+  #{Rails.application.config.action_controller.default_url_options[:host]}
+  def self.default_url_options
+    if Rails.env.production?
+      {
+        env: "prod",
+        host: "api.imaginatuciuda.org", #"prod.jfarellano.xyz", 
+        protocol: "https",
+        front_url: "https://www.imaginatuciuda.org", #"https://ciuda.jfarellano.xyz",
+        admin_url: "https://admin.imaginatuciuda.org" #"https://admin.jfarellano.xyz"
+      }
+    elsif Rails.env.test?  
+      {
+        env: "test",
+        host: "test-api.imaginatuciuda.org", #"test.jfarellano.xyz", 
+        protocol: "https",
+        front_url: "https://test.imaginatuciuda.org", #"https://ciuda-test.jfarellano.xyz",
+        admin_url: "https://test-admin.imaginatuciuda.org" #"https://admin-test.jfarellano.xyz"
+      }
+    else 
+      {
+        env: "dev",
+        host: "dev-api.imaginatuciuda.org", #"dev.jfarellano.xyz", 
+        protocol: "https",
+        front_url: "https://dev.imaginatuciuda.org", #NOT WORKING... #"https://ciuda-dev.jfarellano.xyz",
+        admin_url: "https://dev-admin.imaginatuciuda.org" #NOT WORKING... #"https://admin-dev.jfarellano.xyz"
+      }
+    end
+  end
 
   protected
   def get_current_user
@@ -16,6 +46,11 @@ class ApplicationController < ActionController::API
     @current_user = nil
     authenticate_with_http_token do |key, options|
       @token = Token.find_by(secret: key)
+      expired = @token ? @token.expire_at.past? : false
+      if expired
+        @token.destroy 
+        raise Exceptions::TokenExpired
+      end
       @current_user = @token.user if @token
     end
     # request.headers.each do |key, options|
