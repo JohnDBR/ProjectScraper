@@ -7,6 +7,7 @@ class ScraperController < ApplicationController
   def student_schedule
     @current_user.storage.destroy if @current_user.storage
     @sl.login_pomelo?(params[:user], params[:password])
+    @sp.set_rails_id_temporal_student(@current_user.id)
     result = @sp.student_info()
     s = Storage.create(path:@sp.save(Storage.get_path))
     @current_user.update_attributes(storage_id:s.id, full_name:@sp.temporal_student.name)

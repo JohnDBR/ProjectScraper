@@ -97,6 +97,7 @@ class ScraperHelper
       ## the matrix is the one from the student loaded. Then the repeated cells are
       ## deleted by the .unique
 
+      #@sp.set_rails_id_temporal_student(@current_user.id) #The name of the person will be set!
       sp.student_info(true)
       s = Storage.create(path:sp.save(Storage.get_path))
       group.update_attribute(:storage_id, s.id)

@@ -1,11 +1,13 @@
 class Student
   
   attr_reader :name, :code, :username#, :password
-  attr_accessor :schedule
+  attr_accessor :schedule, :rails_id
   
   def initialize(name, code, username)#, password)
     #username: a string with the username of uninorte domains
     @username = username
+    #rails_id: a string with the unique id of the rails framework
+    @rails_id = "0"
     #password: a string with the password of uninorte domains
     # @password = password
     #name: a string with the name of the student
@@ -39,10 +41,10 @@ class Student
     hour1 = Integer(parts[0].split(":")[0])
     hour2 = Integer(parts[1].split(":")[0])
     if hour2 == hour1 + 1
-      @schedule[parts[2]]["#{parts[0]} - #{parts[1]}"] = "1" #schedule[parts[2]].push("#{parts[0]}-#{parts[1]}")
+      @schedule[parts[2]]["#{parts[0]} - #{parts[1]}"] = "#{@rails_id}" #"1" #schedule[parts[2]].push("#{parts[0]}-#{parts[1]}")
     else 
       while hour1 != hour2
-        @schedule[parts[2]]["#{hour1}:30 - #{hour1+1}:30"] = "1"
+        @schedule[parts[2]]["#{hour1}:30 - #{hour1+1}:30"] = "#{@rails_id}" #"1"
         hour1 = hour1+1
       end
     end

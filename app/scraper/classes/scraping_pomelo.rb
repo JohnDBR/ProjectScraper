@@ -10,6 +10,7 @@ class ScrapingPomelo < Scraped
     super
   end
 
+  #BEFORE THIS ACTION RAILS NEEDS TO CALL set_rails_id_temporal_student(id)
   #receive: a boolean, true if we are going to add a student to the conflict matrix false if he is a temporal student 
   def student_info(save = false)
     ##get name and code of the student from the banner on top of the page
@@ -39,11 +40,17 @@ class ScrapingPomelo < Scraped
             if save 
               hour1 = Integer(parts[0].split(":")[0])
               hour2 = Integer(parts[1].split(":")[0])
+              matrix_key = ""
+              if @@temporal_student.rails_id.eql?("0")
+                matrix_key = @@temporal_student.name.split(" ")[0]
+              else
+                matrix_key = @@temporal_student.rails_id
+              end
               if hour2 == hour1 + 1
-                @@conflict_matrix[parts[2]]["#{parts[0]} - #{parts[1]}"] = "#{@@conflict_matrix[parts[2]]["#{parts[0]} - #{parts[1]}"]} #{@@temporal_student.name.split(" ")[0]}" #[parts[2]].push("#{parts[0]}-#{parts[1]}-#{name.split(" ")[0]}")
+                @@conflict_matrix[parts[2]]["#{parts[0]} - #{parts[1]}"] = "#{@@conflict_matrix[parts[2]]["#{parts[0]} - #{parts[1]}"]} #{matrix_key}" #[parts[2]].push("#{parts[0]}-#{parts[1]}-#{name.split(" ")[0]}")
               else 
                 while hour1 != hour2
-                  @@conflict_matrix[parts[2]]["#{hour1}:30 - #{hour1+1}:30"] = "#{@@conflict_matrix[parts[2]]["#{hour1}:30 - #{hour1+1}:30"]} #{@@temporal_student.name.split(" ")[0]}"
+                  @@conflict_matrix[parts[2]]["#{hour1}:30 - #{hour1+1}:30"] = "#{@@conflict_matrix[parts[2]]["#{hour1}:30 - #{hour1+1}:30"]} #{matrix_key}"
                   hour1 = hour1+1
                 end
               end
