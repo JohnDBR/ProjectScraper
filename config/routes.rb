@@ -16,6 +16,7 @@ Rails.application.routes.draw do
 
   resources :groups do
     resources :members, only: [:show, :index, :create, :update, :destroy]
+    resources :links, only: [:index]
     # get ':group_id/members/:id', to: 'members#show'
   end
   post 'groups/:id/add_schedules', to: 'groups#add_schedules'

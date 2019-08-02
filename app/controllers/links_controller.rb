@@ -1,6 +1,15 @@
 class LinksController < ApplicationController
   skip_before_action :get_current_user, only: [:open, :destroy, :add_schedules, :schedule]
   before_action :set_link, only: [:open, :destroy, :add_schedules, :schedule]
+  before_action :set_group, only: [:index]
+
+  def index 
+    if is_current_user_member(params[:group_id])
+      render_ok @group.links
+    else
+      permissions_error
+    end
+  end
 
   def create
     if is_current_user_member(params[:group_id])
@@ -61,6 +70,10 @@ class LinksController < ApplicationController
   private 
   def set_link
     @link = Link.where(secret:params[:link]).first
+  end
+
+  def set_group
+    @group = @current_user.groups.find params[:group_id]
   end
 
   # def is_current_user_member
