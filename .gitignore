@@ -20,7 +20,7 @@
 .byebug_history
 
 #If the files were on a previous commit you have to run 'git rm --cached FILE' to start ignoring them...
-Gemfile.lock 
+#Gemfile.lock  #Heroku needs the Gemfile.lock so fuck it!
 db/schema.rb
 db/*.data
 
