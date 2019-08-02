@@ -10,7 +10,7 @@ class ScraperController < ApplicationController
     result = @sp.student_info()
     s = Storage.create(path:@sp.save(Storage.get_path))
     @current_user.update_attributes(storage_id:s.id, full_name:@sp.temporal_student.name)
-    render_ok result
+    render json: {schedule:result, user:@current_user}, status: :ok
   end
 
   def conflict_matrix
