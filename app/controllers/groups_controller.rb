@@ -2,6 +2,31 @@ class GroupsController < ApplicationController
   before_action :set_group, only: [:show, :update, :destroy, :schedule, :add_schedules]
 
   def index
+    # Sounds like a refactor maybe in the model!
+    groups = @current_user.groups
+    group_admins = []
+    groups.each do |g|
+      g.members.where(admin:true).each do |admin|
+        group_admins.push(admin)
+      end
+    end
+    # Sounds like a refactor maybe in the model!
+    admins_ids = []
+    group_admins.each do |ga|
+      admins_ids.push(ga.user.id)
+    end
+    groups = groups.select{ |g| admins_ids.include?(@current_user.id) } #reject too but with not
+    pp groups
+    if groups.empty?
+      render json: {groups: 'the user does not own a group!'}, status: :ok
+    else
+      render json: {
+        groups: ActiveModel::Serializer::CollectionSerializer.new(groups, serializer:GroupSerializer)
+      }, status: :ok
+    end
+  end
+
+  def index_all
     render_ok @current_user.groups
   end
 

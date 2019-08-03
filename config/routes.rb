@@ -13,7 +13,7 @@ Rails.application.routes.draw do
   # post 'scraper/conflict_matrix', to: 'scraper#conflict_matrix'
 
   resources :groups, only: [:index, :show, :create, :update, :destroy]
-  # get 'groups', to: 'groups#index'
+  get 'all_groups', to: 'groups#index_all'
 
   resources :groups do
     resources :members, only: [:show, :index, :create, :update, :destroy]
