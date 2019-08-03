@@ -30,7 +30,7 @@ class LinksController < ApplicationController
         member_alias = ""
         member_alias = params[:alias] if params[:alias]
         member = Member.create(alias:member_alias, group_id:@link.group_id, user_id:@current_user.id, admin:false)
-        render json: {link:@link.destroy, member:MemberSerializer.new(member)}, status: :ok
+        render json: {link:@link, member:MemberSerializer.new(member)}, status: :ok #@link.destroy
       end
     elsif @link
       render json: {guest: "Welcome!"}, status: :ok
