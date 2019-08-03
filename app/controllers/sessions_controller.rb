@@ -48,7 +48,7 @@ class SessionsController < ApplicationController
         member_alias = params[:alias] if params[:alias]
         member = Member.create(alias:member_alias, group_id:link.group_id, user_id:auth.user.id, admin:false)
         link = link.destroy
-        render json: {token:auth.token, link:link, member:member}, status: :created
+        render json: {token:auth.token, link:link, member:MemberSerializer.new(member)}, status: :created
       end  
     else
       render json: auth.errors, status: :unauthorized 

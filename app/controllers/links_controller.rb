@@ -30,7 +30,7 @@ class LinksController < ApplicationController
         member_alias = ""
         member_alias = params[:alias] if params[:alias]
         member = Member.create(alias:member_alias, group_id:@link.group_id, user_id:@current_user.id, admin:false)
-        render json: {link:@link.destroy, member:member}, status: :ok
+        render json: {link:@link.destroy, member:MemberSerializer.new(member)}, status: :ok
       end
     elsif @link
       render json: {guest: "Welcome!"}, status: :ok
@@ -45,7 +45,7 @@ class LinksController < ApplicationController
       s = ScraperHelper.new
       if s.add_schedule_to_storage(group, params)
         s.create_conflict_matrix(group)
-        render json: {json: s.conflict_matrix, errors: s.errors}, status: :ok
+        render json: {json: s.conflict_matrix,  group:GroupSerializer.new(@link.group), errors: s.errors}, status: :ok
       else
         uninorte_authentication_error
       end
@@ -59,7 +59,7 @@ class LinksController < ApplicationController
       s = ScraperHelper.new
       group = @link.group
       s.create_conflict_matrix(group)
-      render json: {json: s.conflict_matrix, errors: s.errors}, status: :ok
+      render json: {json: s.conflict_matrix, group:GroupSerializer.new(@link.group), errors: s.errors}, status: :ok
     else
       permissions_error
     end

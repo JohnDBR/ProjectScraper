@@ -11,6 +11,6 @@ class Member < ApplicationRecord
   end
 
   def format_downcase
-    self.alias.downcase!
+    self.alias.downcase! if self.alias
   end
 end

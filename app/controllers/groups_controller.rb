@@ -42,7 +42,7 @@ class GroupsController < ApplicationController
     if is_current_user_member(params[:id])
       s = ScraperHelper.new
       s.create_conflict_matrix(@group)
-      render json: {json: s.conflict_matrix, errors: s.errors}, status: :ok
+      render json: {json: s.conflict_matrix, group:GroupSerializer.new(@group), errors: s.errors}, status: :ok
     else
       permissions_error
     end
@@ -53,7 +53,7 @@ class GroupsController < ApplicationController
       s = ScraperHelper.new
       if s.add_schedule_to_storage(@group, params)
         s.create_conflict_matrix(@group)
-        render json: {json: s.conflict_matrix, errors: s.errors}, status: :ok
+        render json: {json: s.conflict_matrix, group:GroupSerializer.new(@group), errors: s.errors}, status: :ok
       else
         uninorte_authentication_error
       end
