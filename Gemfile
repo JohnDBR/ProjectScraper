@@ -16,7 +16,7 @@ gem 'rails', '~> 5.1.4'
 
 #group :production do
 # Use PostgreSQL as the database for Active Record
-gem 'pg' 
+gem 'pg' #sudo apt-get install libpq-dev
 #end
 
 # Use Puma as the app server
