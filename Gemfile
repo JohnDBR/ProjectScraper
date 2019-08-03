@@ -57,3 +57,25 @@ gem 'mechanize', '2.7.5'
 gem 'watir', '6.10.3'
 gem 'selenium-webdriver', '3.9.0'
 gem 'webdrivers', '3.2.4'
+
+#For Bundler problems!
+# gem uninstall bundler
+# gem install bundler -v 2.0.2
+# bundle update
+
+#For Heroku problems with chromedriver!
+
+# heroku buildpacks:clear --app=unimatrix-api 
+
+# heroku buildpacks:add --app=unimatrix-api heroku/google-chrome
+# heroku buildpacks:add --app=unimatrix-api heroku/chromedriver
+# heroku buildpacks:add --app=unimatrix-api heroku/ruby
+
+# heroku buildpacks:add --app=unimatrix-api https://github.com/heroku/heroku-buildpack-google-chrome
+
+# heroku buildpacks:add --app=unimatrix-api https://github.com/dwayhs/heroku-buildpack-chrome
+# heroku buildpacks:add --app=unimatrix-api https://github.com/heroku/heroku-buildpack-chromedriver
+# heroku buildpacks:add --app=unimatrix-api heroku/ruby
+
+#For Heroku ENV
+# heroku config:set --app=unimatrix-api chromedriver=/app/.chromedriver/bin/chromedriver
