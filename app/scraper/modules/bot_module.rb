@@ -2,6 +2,8 @@ require 'watir'
 # require 'webdrivers'
 require 'mechanize'
 
+Selenium::WebDriver::Chrome.path = ENV["WD_CHROME_PATH"] || "/usr/bin/google-chrome"
+
 module BotModule
   
   #entity: a Mechanize object (the bot)

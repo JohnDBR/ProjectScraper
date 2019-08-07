@@ -69,9 +69,9 @@ gem 'webdrivers', '3.2.4'
 
 # heroku buildpacks:add --app=unimatrix-api heroku/google-chrome
 # heroku buildpacks:add --app=unimatrix-api heroku/chromedriver
-# heroku buildpacks:add --app=unimatrix-api heroku/ruby
 
-# heroku buildpacks:add --app=unimatrix-api https://github.com/heroku/heroku-buildpack-google-chrome
+# heroku config:set --app=unimatrix-api CHROMEDRIVER_VERSION=2.35.528139
+# heroku config:set --app=unimatrix-api WD_CHROME_PATH=/app/.apt/usr/bin/google-chrome
 
 # heroku buildpacks:add --app=unimatrix-api https://github.com/dwayhs/heroku-buildpack-chrome
 # heroku buildpacks:add --app=unimatrix-api https://github.com/heroku/heroku-buildpack-chromedriver
