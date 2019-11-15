@@ -36,7 +36,7 @@ gem 'active_model_serializers'
 
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 # This is required because angular requests can present problems...
-gem 'rack-cors', '~> 1.0.2' 
+gem 'rack-cors', '~> 1.0.5' 
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
